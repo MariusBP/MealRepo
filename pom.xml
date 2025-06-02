@@ -58,6 +58,12 @@
 	</dependencies>
 
 	<build>
+		<sourceDirectory>api/src/main/java</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>api/src/main/resources</directory>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
