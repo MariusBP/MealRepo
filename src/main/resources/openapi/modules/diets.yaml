@@ -1,9 +1,3 @@
-openapi: 3.0.3
-info:
-  title: Meal Repository
-  version: 1.0.0
-  description: API for managing diets, meals, and categories.
-
 paths:
   /diets:
     get:
