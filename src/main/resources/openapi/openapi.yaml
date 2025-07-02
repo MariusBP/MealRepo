@@ -6,4 +6,4 @@ info:
 
 paths:
   /diets:
-    $ref: './modules/diets.yaml#/paths/~1diets'
+    $ref: './resources/diets.yaml#/paths/~1diets'
