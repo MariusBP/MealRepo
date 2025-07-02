@@ -3,6 +3,23 @@ info:
   title: Meal Repository
   version: 1.0.0
   description: API for managing diets, meals, and categories.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local development server
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+security:
+  - ApiKeyAuth: []
 
 paths:
   /diets:
