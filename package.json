@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "bundle": "redocly bundle src/main/resources/openapi/openapi.yaml -o src/main/resources/openapi/openapi-bundled.yaml",
+    "preview": "redocly preview-docs src/main/resources/openapi/openapi.yaml",
+    "validate": "redocly lint src/main/resources/openapi/openapi.yaml"
+  }
+}
+
