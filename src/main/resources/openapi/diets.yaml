@@ -1,0 +1,62 @@
+openapi: 3.0.3
+info:
+  title: Diets service API
+  version: 1.0.0
+  description: API for managing diets, meals, and categories.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local development server
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /diets:
+    get:
+      summary: Get all diets
+      parameters:
+        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+        - $ref: 'common/header.yaml#/components/parameters/AcceptLanguageHeader'
+        - $ref: 'common/header.yaml#/components/parameters/AcceptEncodingHeader'
+      responses:
+        '200':
+          description: List of diet objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Diet'
+        '404':
+          description: Diets not found.
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      name: X-API-Key
+      type: apiKey
+      in: header
+  schemas:
+    Diet:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Vegetarian
+        picture:
+          type: string
+          example: https://example.com/images/vegetarian.jpg
+        description:
+          type: string
+          example: A plant-based diet excluding all meat ingredients.

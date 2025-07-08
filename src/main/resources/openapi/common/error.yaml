@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: Error codes
+  version: 1.0.0
+  description: Error codes just for our API's
+
+parameters:
+  error:
+    type: object
+    properties:
+      timestamp:
+        type: string
+        format: date-time
+      status:
+        type: integer
+        example: 400
+      error:
+        type: string
+        example: Bad Request
+      message:
+        type: string
+        example: Invalid 'diet_id' parameter
+      path:
+        type: string
+        example: /api/meals

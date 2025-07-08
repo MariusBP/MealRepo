@@ -1,0 +1,173 @@
+openapi: 3.0.3
+info:
+  title: Meal service API
+  version: 1.0.0
+  description: API for fetching meals and meal details
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local development server
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /meals:
+    get:
+      summary: Get list of meals
+      parameters:
+        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+        - $ref: 'common/header.yaml#/components/parameters/AcceptLanguageHeader'
+        - $ref: 'common/header.yaml#/components/parameters/AcceptEncodingHeader'
+        - $ref: '#/components/parameters/DietIdParam'
+        - $ref: '#/components/parameters/CategoryIdListParam'
+      operationId: listMeals
+      responses:
+        '200':
+          description: List of meals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/listMealResponse'
+
+  /meal:
+    get:
+      summary: Get meal by ID
+      parameters:
+        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+        - $ref: 'common/header.yaml#/components/parameters/AcceptLanguageHeader'
+        - $ref: 'common/header.yaml#/components/parameters/AcceptEncodingHeader'
+        - $ref: '#/components/parameters/IdParam'
+      operationId: getMeal
+      responses:
+        '200':
+          description: Meal details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/readMealResponse'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      name: X-API-Key
+      type: apiKey
+      in: header
+  schemas:
+    listMealResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/parameters/Id'
+        name:
+          $ref: '#/components/parameters/Name'
+        picture:
+          $ref: '#/components/parameters/Picture'
+        description:
+          $ref: '#/components/parameters/Description'
+        recipe:
+          $ref: '#/components/parameters/Recipe'
+        prepTime:
+          $ref: '#/components/parameters/PrepTime'
+    readMealResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/parameters/Id'
+        name:
+          $ref: '#/components/parameters/Name'
+        picture:
+          $ref: '#/components/parameters/Picture'
+        description:
+          $ref: '#/components/parameters/Description'
+        recipe:
+          $ref: '#/components/parameters/Recipe'
+        prepTime:
+          $ref: '#/components/parameters/PrepTime'
+        diet:
+          $ref: '#/components/parameters/Diet'
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/parameters/Ingredient'
+        allergies:
+          type: array
+          items:
+            $ref: '#/components/parameters/Allergy'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/parameters/Category'
+  parameters:
+    DietIdParam:
+      name: diet_id
+      in: query
+      required: true
+      schema:
+        type: integer
+    CategoryIdListParam:
+      name: category_id_list
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: integer
+    IdParam:
+      name: id
+      in: query
+      required: true
+      schema:
+        type: integer
+    Id:
+      type: integer
+    Name:
+      type: string
+    Picture:
+      type: string
+      format: byte
+    Description:
+      type: string
+    Recipe:
+      type: string
+    PrepTime:
+      type: integer
+    Diet:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          $ref: '#/components/schemas/Name'
+    Ingredient:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          $ref: '#/components/schemas/Name'
+    Allergy:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          $ref: '#/components/schemas/Name'
+    Category:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          $ref: '#/components/schemas/Name'
