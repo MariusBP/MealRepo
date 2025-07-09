@@ -48,7 +48,7 @@ paths:
         - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
         - $ref: 'common/header.yaml#/components/parameters/AcceptLanguageHeader'
         - $ref: 'common/header.yaml#/components/parameters/AcceptEncodingHeader'
-        - $ref: '#/components/parameters/IdParam'
+        - $ref: '#/components/parameters/MealIdParam'
       operationId: getMeal
       responses:
         '200':
@@ -69,80 +69,46 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/parameters/Id'
+          $ref: '#/components/schemas/Id'
         name:
-          $ref: '#/components/parameters/Name'
+          $ref: '#/components/schemas/Name'
         picture:
-          $ref: '#/components/parameters/Picture'
+          $ref: '#/components/schemas/Picture'
         description:
-          $ref: '#/components/parameters/Description'
+          $ref: '#/components/schemas/Description'
         recipe:
-          $ref: '#/components/parameters/Recipe'
+          $ref: '#/components/schemas/Recipe'
         prepTime:
-          $ref: '#/components/parameters/PrepTime'
+          $ref: '#/components/schemas/PrepTime'
     readMealResponse:
       type: object
       properties:
         id:
-          $ref: '#/components/parameters/Id'
+          $ref: '#/components/schemas/Id'
         name:
-          $ref: '#/components/parameters/Name'
+          $ref: '#/components/schemas/Name'
         picture:
-          $ref: '#/components/parameters/Picture'
+          $ref: '#/components/schemas/Picture'
         description:
-          $ref: '#/components/parameters/Description'
+          $ref: '#/components/schemas/Description'
         recipe:
-          $ref: '#/components/parameters/Recipe'
+          $ref: '#/components/schemas/Recipe'
         prepTime:
-          $ref: '#/components/parameters/PrepTime'
+          $ref: '#/components/schemas/PrepTime'
         diet:
-          $ref: '#/components/parameters/Diet'
+          $ref: '#/components/schemas/Diet'
         ingredients:
           type: array
           items:
-            $ref: '#/components/parameters/Ingredient'
+            $ref: '#/components/schemas/Ingredient'
         allergies:
           type: array
           items:
-            $ref: '#/components/parameters/Allergy'
+            $ref: '#/components/schemas/Allergy'
         categories:
           type: array
           items:
-            $ref: '#/components/parameters/Category'
-  parameters:
-    DietIdParam:
-      name: diet_id
-      in: query
-      required: true
-      schema:
-        type: integer
-    CategoryIdListParam:
-      name: category_id_list
-      in: query
-      required: false
-      schema:
-        type: array
-        items:
-          type: integer
-    IdParam:
-      name: id
-      in: query
-      required: true
-      schema:
-        type: integer
-    Id:
-      type: integer
-    Name:
-      type: string
-    Picture:
-      type: string
-      format: byte
-    Description:
-      type: string
-    Recipe:
-      type: string
-    PrepTime:
-      type: integer
+            $ref: '#/components/schemas/Category'
     Diet:
       type: object
       properties:
@@ -171,3 +137,38 @@ components:
           $ref: '#/components/schemas/Id'
         name:
           $ref: '#/components/schemas/Name'
+    Id:
+      type: integer
+    Name:
+      type: string
+    Picture:
+      type: string
+      format: byte
+    Description:
+      type: string
+    Recipe:
+      type: string
+    PrepTime:
+      type: integer
+
+  parameters:
+    DietIdParam:
+      name: diet_id
+      in: query
+      required: true
+      schema:
+        type: integer
+    CategoryIdListParam:
+      name: category_id_list
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: integer
+    MealIdParam:
+      name: id
+      in: query
+      required: true
+      schema:
+        type: integer
