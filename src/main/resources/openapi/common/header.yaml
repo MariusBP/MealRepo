@@ -1,0 +1,49 @@
+openapi: 3.0.3
+info:
+  title: Headers
+  version: 1.0.0
+  description: Headers just for our API's
+
+components:
+  parameters:
+    AcceptHeader:
+      name: Accept
+      in: header
+      required: true
+      schema:
+        type: string
+        example: application/json
+    ContentTypeHeader:
+      name: Content-Type
+      in: header
+      required: false
+      schema:
+        type: string
+        example: application/json
+    RequestIdHeader:
+      name: X-Request-ID
+      in: header
+      required: false
+      schema:
+        type: string
+    UserAgentHeader:
+      name: User-Agent
+      in: header
+      required: false
+      schema:
+        type: string
+        example: Mozilla/5.0
+    AcceptLanguageHeader:
+      name: Accept-Language
+      in: header
+      required: false
+      schema:
+        type: string
+        example: en-US,en;q=0.9
+    AcceptEncodingHeader:
+      name: Accept-Encoding
+      in: header
+      required: false
+      schema:
+        type: string
+        example: gzip, deflate, br
