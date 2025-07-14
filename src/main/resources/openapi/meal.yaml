@@ -23,8 +23,6 @@ paths:
         - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
         - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
         - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
-        - $ref: 'common/header.yaml#/components/parameters/AcceptLanguageHeader'
-        - $ref: 'common/header.yaml#/components/parameters/AcceptEncodingHeader'
         - $ref: '#/components/parameters/DietIdParam'
         - $ref: '#/components/parameters/CategoryIdListParam'
       operationId: listMeals
@@ -46,8 +44,6 @@ paths:
         - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
         - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
         - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
-        - $ref: 'common/header.yaml#/components/parameters/AcceptLanguageHeader'
-        - $ref: 'common/header.yaml#/components/parameters/AcceptEncodingHeader'
         - $ref: '#/components/parameters/MealIdParam'
       operationId: getMeal
       responses:
