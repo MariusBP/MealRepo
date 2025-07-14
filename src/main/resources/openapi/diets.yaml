@@ -17,46 +17,77 @@ security:
 paths:
   /diets:
     get:
-      summary: Get all diets
+      summary: Get list of diets
+      operationId: listDiets
+      security: []  #Overrides security to make this API public
       parameters:
         - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
         - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
         - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
         - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
-        - $ref: 'common/header.yaml#/components/parameters/AcceptLanguageHeader'
-        - $ref: 'common/header.yaml#/components/parameters/AcceptEncodingHeader'
+        - $ref: 'common/header.yaml#/components/parameters/CorrelationIdHeader'
       responses:
         '200':
-          description: List of diet objects
+          description: List of diets
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Diet'
-        '404':
-          description: Diets not found.
+                  $ref: '#/components/schemas/listDietResponse'
+              examples:
+                multipleDiets:
+                  summary: List of two diets
+                  value:
+                    - id: 1
+                      name: "Vegetarian"
+                      picture: "https://example.com/images/vegetarian-diet.jpg"
+                      description: "A diet that excludes meat and fish but includes other animal products"
+                    - id: 2
+                      name: "Keto"
+                      picture: "https://example.com/images/keto-diet.jpg"
+                      description: "High-fat, low-carb diet that can help you burn fat more effectively"
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
 
 components:
-  securitySchemes:
-    ApiKeyAuth:
-      name: X-API-Key
-      type: apiKey
-      in: header
   schemas:
-    Diet:
+    listDietResponse:
+      required:
+        - id
+        - name
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-          example: 1
+          $ref: '#/components/schemas/Id'
         name:
-          type: string
-          example: Vegetarian
+          $ref: '#/components/schemas/Name'
         picture:
-          type: string
-          example: https://example.com/images/vegetarian.jpg
+          $ref: '#/components/schemas/Picture'
         description:
-          type: string
-          example: A plant-based diet excluding all meat ingredients.
+          $ref: '#/components/schemas/Description'
+      example:
+        id: 1
+        name: "Vegetarian"
+        picture: "https://example.com/images/vegetarian-diet.jpg"
+        description: "A diet that excludes meat and fish but includes other animal products"
+    Id:
+      type: integer
+      format: int64
+      minimum: 1
+      example: 1
+    Name:
+      type: string
+      minLength: 1
+      maxLength: 100
+      example: "Vegetarian"
+    Picture:
+      type: string
+      format: uri
+      example: "https://example.com/images/vegetarian-diet.jpg"
+    Description:
+      type: string
+      maxLength: 500
+      example: "A diet that excludes meat and fish but includes other animal products"
+  securitySchemes:
+    $ref: 'common/security.yaml#/components/securitySchemes'

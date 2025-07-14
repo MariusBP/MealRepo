@@ -1,0 +1,28 @@
+openapi: 3.0.3
+info:
+  title: Api security
+  version: 1.0.0
+  description: Security definitions for our API's
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: |
+        API key for accessing secured endpoints. 
+        This key should be included in the request header as `X-Api-Key`.
+        Example: 
+        '''
+        X-Api-Key: your_api_key_here
+        '''
+    OAuth2Auth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://example.com/oauth/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
