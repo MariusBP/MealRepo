@@ -33,13 +33,6 @@ components:
       schema:
         type: string
         example: Mozilla/5.0
-    AcceptLanguageHeader:
-      name: Accept-Language
-      in: header
-      required: false
-      schema:
-        type: string
-        example: en-US,en;q=0.9
     AcceptEncodingHeader:
       name: Accept-Encoding
       in: header
@@ -47,3 +40,12 @@ components:
       schema:
         type: string
         example: gzip, deflate, br
+    CorrelationIdHeader:
+      name: X-Correlation-ID
+      in: header
+      required: false
+      description: Unique identifier for tracing requests across services
+      schema:
+        type: string
+        format: uuid
+        example: 123e4567-e89b-12d3-a456-426614174000
