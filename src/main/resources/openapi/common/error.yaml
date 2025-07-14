@@ -61,3 +61,15 @@ components:
             error: "Not Found"
             message: "Id: 123 not found"
             path: "/api/xxxx"
+
+    InternalServerError:
+      description: An unexpected error occurred on the server
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            timestamp: "2024-01-20T10:32:05.789Z"
+            status: 500
+            error: "Internal Server Error"
+            message: "An unexpected error occurred while processing your request"

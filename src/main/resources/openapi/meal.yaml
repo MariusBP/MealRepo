@@ -48,6 +48,8 @@ paths:
                   $ref: '#/components/schemas/listMealResponse'
         '400':
           $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
 
   /meal:
     get:
@@ -71,6 +73,8 @@ paths:
                 $ref: '#/components/schemas/readMealResponse'
         '400':
           $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
 
 components:
   securitySchemes:
