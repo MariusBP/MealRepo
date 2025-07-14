@@ -2,7 +2,16 @@ openapi: 3.0.3
 info:
   title: Diets service API
   version: 1.0.0
-  description: API for managing diets, meals, and categories.
+  description: |
+    API for fetching diets and diet details.
+  
+    This API allows you to retrieve a list of diets, 
+    each including its ID, name, picture, and description.
+  
+    The list endpoint does not require a request body.
+  
+    It supports various headers for passing request metadata.
+
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
@@ -19,7 +28,6 @@ paths:
     get:
       summary: Get list of diets
       operationId: listDiets
-      security: []  #Overrides security to make this API public
       parameters:
         - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
         - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
@@ -37,7 +45,7 @@ paths:
                   $ref: '#/components/schemas/listDietResponse'
               examples:
                 multipleDiets:
-                  summary: List of two diets
+                  summary: Example list of two diets
                   value:
                     - id: 1
                       name: "Vegetarian"
@@ -49,8 +57,13 @@ paths:
                       description: "High-fat, low-carb diet that can help you burn fat more effectively"
         '400':
           $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
 
 components:
+  securitySchemes:
+    ApiKeyAuth:
+      $ref: 'common/security.yaml#/components/securitySchemes/ApiKeyAuth'
   schemas:
     listDietResponse:
       required:
@@ -59,35 +72,15 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: 'common/schemas.yaml#/components/schemas/Id'
         name:
-          $ref: '#/components/schemas/Name'
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
         picture:
-          $ref: '#/components/schemas/Picture'
+          $ref: 'common/schemas.yaml#/components/schemas/Picture'
         description:
-          $ref: '#/components/schemas/Description'
+          $ref: 'common/schemas.yaml#/components/schemas/Description'
       example:
         id: 1
         name: "Vegetarian"
         picture: "https://example.com/images/vegetarian-diet.jpg"
         description: "A diet that excludes meat and fish but includes other animal products"
-    Id:
-      type: integer
-      format: int64
-      minimum: 1
-      example: 1
-    Name:
-      type: string
-      minLength: 1
-      maxLength: 100
-      example: "Vegetarian"
-    Picture:
-      type: string
-      format: uri
-      example: "https://example.com/images/vegetarian-diet.jpg"
-    Description:
-      type: string
-      maxLength: 500
-      example: "A diet that excludes meat and fish but includes other animal products"
-  securitySchemes:
-    $ref: 'common/security.yaml#/components/securitySchemes'
