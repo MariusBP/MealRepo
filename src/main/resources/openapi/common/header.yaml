@@ -8,6 +8,9 @@ components:
   parameters:
     AcceptHeader:
       name: Accept
+      description: |
+        Specifies the media type that the client is willing to receive.
+        This is used to negotiate the response format.
       in: header
       required: true
       schema:
@@ -15,6 +18,9 @@ components:
         example: application/json
     ContentTypeHeader:
       name: Content-Type
+      description: |
+        Specifies the media type of the resource being sent to the server.
+        This is typically used for POST and PUT requests.
       in: header
       required: false
       schema:
@@ -22,12 +28,18 @@ components:
         example: application/json
     RequestIdHeader:
       name: X-Request-ID
+      description: |
+        Unique identifier for the request, used for tracing and debugging.
+        If not provided, a new UUID will be generated.
       in: header
       required: false
       schema:
         type: string
     UserAgentHeader:
       name: User-Agent
+      description: |
+        Identifies the client software making the request.
+        This can be used for analytics or to tailor responses based on client capabilities.
       in: header
       required: false
       schema:
@@ -35,6 +47,9 @@ components:
         example: Mozilla/5.0
     AcceptEncodingHeader:
       name: Accept-Encoding
+      description: |
+        Specifies the content encoding that the client can understand.
+        This is used for compression to reduce response size.
       in: header
       required: false
       schema:
@@ -42,9 +57,11 @@ components:
         example: gzip, deflate, br
     CorrelationIdHeader:
       name: X-Correlation-ID
+      description: |
+        Unique identifier for tracking requests across distributed systems.
+        This helps in correlating logs and tracing requests through multiple services.
       in: header
       required: false
-      description: Unique identifier for tracing requests across services
       schema:
         type: string
         format: uuid
