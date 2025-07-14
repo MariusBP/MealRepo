@@ -1,0 +1,33 @@
+openapi: 3.0.3
+info:
+  title: common parameters
+  version: 1.0.0
+  description: parameters just for our API's
+
+components:
+  parameters:
+    DietIdParam:
+      name: diet_id
+      in: query
+      required: true
+      schema:
+        type: integer
+      example: 1
+    CategoryIdListParam:
+      name: category_id_list
+      in: query
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: integer
+        example: [ 1, 2, 3 ]
+    MealIdParam:
+      name: id
+      in: query
+      required: true
+      schema:
+        type: integer
+      example: 1
