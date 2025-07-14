@@ -1,8 +1,17 @@
 openapi: 3.0.3
 info:
-  title: Meal service API
+  title: Meal Service API
   version: 1.0.0
-  description: API for fetching meals and meal details
+  description: |-
+    API for fetching meals and meal details.
+    This contract describes a RESTful API for a meal service.
+    The API allows clients to:
+      - Retrieve a list of meals, filtered by diet and optionally by category.
+      - Retrieve detailed information about a specific meal by its ID.
+    
+    The API requires authentication via an API key provided in the X-API-Key header. 
+    The contract specifies request parameters, expected responses, and data schemas for meals, diets, ingredients, allergies, and categories.
+
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
@@ -23,9 +32,11 @@ paths:
         - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
         - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
         - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
-        - $ref: '#/components/parameters/DietIdParam'
-        - $ref: '#/components/parameters/CategoryIdListParam'
+        - $ref: 'common/parameters.yaml#/components/parameters/DietIdParam'
+        - $ref: 'common/parameters.yaml#/components/parameters/CategoryIdListParam'
       operationId: listMeals
+      description: |-
+        Retrieves a list of meals based on the specified diet and optional category filters.
       responses:
         '200':
           description: List of meals
@@ -35,6 +46,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/listMealResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
 
   /meal:
     get:
@@ -44,8 +57,11 @@ paths:
         - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
         - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
         - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
-        - $ref: '#/components/parameters/MealIdParam'
+        - $ref: 'common/parameters.yaml#/components/parameters/MealIdParam'
       operationId: getMeal
+      description: |-
+          Retrieves detailed information about a specific meal by its ID.
+          The response includes meal details, associated diets, ingredients, allergies, and categories.
       responses:
         '200':
           description: Meal details
@@ -53,118 +69,83 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/readMealResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
 
 components:
   securitySchemes:
     ApiKeyAuth:
-      name: X-API-Key
-      type: apiKey
-      in: header
+      $ref: 'common/security.yaml#/components/securitySchemes/ApiKeyAuth'
   schemas:
     listMealResponse:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: 'common/schemas.yaml#/components/schemas/Id'
         name:
-          $ref: '#/components/schemas/Name'
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
         picture:
-          $ref: '#/components/schemas/Picture'
+          $ref: 'common/schemas.yaml#/components/schemas/Picture'
         description:
-          $ref: '#/components/schemas/Description'
+          $ref: 'common/schemas.yaml#/components/schemas/Description'
         recipe:
-          $ref: '#/components/schemas/Recipe'
+          $ref: 'common/schemas.yaml#/components/schemas/Recipe'
         prepTime:
-          $ref: '#/components/schemas/PrepTime'
+          $ref: 'common/schemas.yaml#/components/schemas/PrepTime'
     readMealResponse:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: 'common/schemas.yaml#/components/schemas/Id'
         name:
-          $ref: '#/components/schemas/Name'
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
         picture:
-          $ref: '#/components/schemas/Picture'
+          $ref: 'common/schemas.yaml#/components/schemas/Picture'
         description:
-          $ref: '#/components/schemas/Description'
+          $ref: 'common/schemas.yaml#/components/schemas/Description'
         recipe:
-          $ref: '#/components/schemas/Recipe'
+          $ref: 'common/schemas.yaml#/components/schemas/Recipe'
         prepTime:
-          $ref: '#/components/schemas/PrepTime'
-        diet:
-          $ref: '#/components/schemas/Diet'
-        ingredients:
+          $ref: 'common/schemas.yaml#/components/schemas/PrepTime'
+        diets:
+          $ref: '#/components/schemas/DietObject'
+        ingredient:
           type: array
           items:
-            $ref: '#/components/schemas/Ingredient'
+            $ref: '#/components/schemas/IngredientObject'
         allergies:
           type: array
           items:
-            $ref: '#/components/schemas/Allergy'
+            $ref: '#/components/schemas/AllergyObject'
         categories:
           type: array
           items:
-            $ref: '#/components/schemas/Category'
-    Diet:
+            $ref: '#/components/schemas/CategoryObject'
+    DietObject:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: 'common/schemas.yaml#/components/schemas/Id'
         name:
-          $ref: '#/components/schemas/Name'
-    Ingredient:
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
+    IngredientObject:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: 'common/schemas.yaml#/components/schemas/Id'
         name:
-          $ref: '#/components/schemas/Name'
-    Allergy:
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
+    AllergyObject:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: 'common/schemas.yaml#/components/schemas/Id'
         name:
-          $ref: '#/components/schemas/Name'
-    Category:
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
+    CategoryObject:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: 'common/schemas.yaml#/components/schemas/Id'
         name:
-          $ref: '#/components/schemas/Name'
-    Id:
-      type: integer
-    Name:
-      type: string
-    Picture:
-      type: string
-      format: byte
-    Description:
-      type: string
-    Recipe:
-      type: string
-    PrepTime:
-      type: integer
-
-  parameters:
-    DietIdParam:
-      name: diet_id
-      in: query
-      required: true
-      schema:
-        type: integer
-    CategoryIdListParam:
-      name: category_id_list
-      in: query
-      required: false
-      schema:
-        type: array
-        items:
-          type: integer
-    MealIdParam:
-      name: id
-      in: query
-      required: true
-      schema:
-        type: integer
+          $ref: 'common/schemas.yaml#/components/schemas/Name'

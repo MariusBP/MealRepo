@@ -1,0 +1,33 @@
+openapi: 3.0.3
+info:
+  title: common schemas
+  version: 1.0.0
+  description: parameters just for our API's
+
+components:
+  schemas:
+    Id:
+      type: integer
+      format: int64
+      minimum: 1
+      example: 1
+    Name:
+      type: string
+      minLength: 1
+      maxLength: 100
+      example: "Name of the item"
+    Picture:
+      type: string
+      format: uri
+      example: "https://example.com/images/salad.jpg"
+    Description:
+      type: string
+      maxLength: 500
+      example: "A diet that excludes meat and fish but includes other animal products"
+    Recipe:
+      type: string
+      maxLength: 2000
+      example: "Mix all ingredients and cook for 30 minutes."
+    PrepTime:
+      type: integer
+      minimum: 0
