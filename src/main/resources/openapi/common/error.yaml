@@ -2,24 +2,74 @@ openapi: 3.0.3
 info:
   title: Error codes
   version: 1.0.0
-  description: Error codes just for our API's
+  description: Error codes for our API's
 
-parameters:
-  error:
-    type: object
-    properties:
-      timestamp:
-        type: string
-        format: date-time
-      status:
-        type: integer
-        example: 400
-      error:
-        type: string
-        example: Bad Request
-      message:
-        type: string
-        example: Invalid 'diet_id' parameter
-      path:
-        type: string
-        example: /api/meals
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+
+  responses:
+    BadRequest:
+      description: The request parameters are invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            timestamp: "2024-01-20T10:30:45.123Z"
+            status: 400
+            error: "Bad Request"
+            message: "Invalid sort parameter. Allowed values are: name, id"
+            path: "/api/diets"
+
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            timestamp: "2024-01-20T10:31:15.456Z"
+            status: 404
+            error: "Not Found"
+            message: "Diet with id '123' not found"
+            path: "/api/diets"
+
+    Unauthorized:
+      description: Authentication failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            timestamp: "2024-01-20T10:31:15.456Z"
+            status: 401
+            error: "Unauthorized"
+            message: "Missing or invalid API key"
+            path: "/api/diets"
+
+    Forbidden:
+      description: Permission denied
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            timestamp: "2024-01-20T10:31:15.456Z"
+            status: 403
+            error: "Forbidden"
+            message: "Insufficient permissions to access this resource"
+            path: "/api/diets"
