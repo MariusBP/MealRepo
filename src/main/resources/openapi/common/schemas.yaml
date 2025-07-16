@@ -31,3 +31,19 @@ components:
     PrepTime:
       type: integer
       minimum: 0
+    Category:
+        type: object
+        properties:
+            id:
+              $ref: '#/components/schemas/Id'
+            name:
+              $ref: '#/components/schemas/Name'
+            description:
+              $ref: '#/components/schemas/Description'
+        required:
+            - id
+            - name
+        example:
+            id: 1
+            name: "Vegan"
+            description: "A category for vegan meals"
