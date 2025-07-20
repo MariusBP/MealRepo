@@ -36,6 +36,8 @@ paths:
         - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
         - $ref: 'common/header.yaml#/components/parameters/CorrelationIdHeader'
       operationId: listCategories
+      tags:
+          - Category
       description: |-
           Retrieves a list of categories for meals.
           This endpoint does not require a request body.
@@ -65,6 +67,8 @@ paths:
         - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
         - $ref: 'common/header.yaml#/components/parameters/CorrelationIdHeader'
       operationId: createCategory
+      tags:
+          - Category
       requestBody:
         description: Category details to create
         required: true

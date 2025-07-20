@@ -28,6 +28,8 @@ paths:
     get:
       summary: Get list of diets
       operationId: listDiets
+      tags:
+          - Diet
       parameters:
         - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
         - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
