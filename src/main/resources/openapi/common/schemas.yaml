@@ -19,11 +19,11 @@ components:
     Picture:
       type: string
       format: uri
-      example: "https://example.com/images/salad.jpg"
+      example: "https://example.com/images/imagename.jpg"
     Description:
       type: string
       maxLength: 500
-      example: "A diet that excludes meat and fish but includes other animal products"
+      example: "A description of the item, providing details about its features and characteristics."
     Recipe:
       type: string
       maxLength: 2000
