@@ -35,6 +35,8 @@ paths:
         - $ref: 'common/parameters.yaml#/components/parameters/DietIdParam'
         - $ref: 'common/parameters.yaml#/components/parameters/CategoryIdListParam'
       operationId: listMeals
+      tags:
+        - meal
       description: |-
         Retrieves a list of meals based on the specified diet and optional category filters.
       responses:
@@ -61,6 +63,8 @@ paths:
         - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
         - $ref: 'common/parameters.yaml#/components/parameters/MealIdParam'
       operationId: getMeal
+      tags:
+        - meal
       description: |-
           Retrieves detailed information about a specific meal by its ID.
           The response includes meal details, associated diets, ingredients, allergies, and categories.
