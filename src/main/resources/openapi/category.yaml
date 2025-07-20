@@ -49,10 +49,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Category'
-            '400':
-              $ref: 'common/error.yaml#/components/responses/BadRequest'
-            '500':
-              $ref: 'common/error.yaml#/components/responses/InternalServerError'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
 
   /category:
     post:
@@ -79,7 +79,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'common/schemas.yaml#/components/schemas/Category'
+                $ref: '#/components/schemas/Category'
         '400':
           $ref: 'common/error.yaml#/components/responses/BadRequest'
         '500':
