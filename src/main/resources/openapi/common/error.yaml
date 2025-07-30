@@ -8,12 +8,6 @@ components:
   schemas:
     Error:
       type: object
-      required:
-        - timestamp
-        - status
-        - error
-        - message
-        - path
       description: |
         Represents an error response from the API.
         This schema is used to standardize error responses across all endpoints.
@@ -46,7 +40,7 @@ components:
             timestamp: "2024-01-20T10:30:45.123Z"
             status: 400
             error: "Bad Request"
-            message: "Invalid sort parameter. Allowed values are: name, id"
+            message: "Invalid request parameters"
             path: "/api/xxx"
 
     NotFound:

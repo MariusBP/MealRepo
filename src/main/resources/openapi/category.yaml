@@ -1,0 +1,113 @@
+openapi: 3.0.3
+info:
+  title: Category service API
+  version: 1.0.0
+  description: |
+    API for fetching and creating categories for meals.
+    This contract describes a RESTful API for a category service.
+    
+    This API allows you to:
+        - Retrieve a list of categories, each including its ID, name, and description.
+        - Create a new category with a name and description.
+    
+    The create endpoint requires a request body with the category details.
+    
+    It supports various headers for passing request metadata.
+
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local development server
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /categories:
+    get:
+      summary: Get a list of categories
+      parameters:
+        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+        - $ref: 'common/header.yaml#/components/parameters/CorrelationIdHeader'
+      operationId: listCategories
+      tags:
+          - Category
+      description: |-
+          Retrieves a list of categories for meals.
+          This endpoint does not require a request body.
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
+
+  /category:
+    post:
+      summary: |
+        Create a new category including name and description.
+        ID will be generated automatically.
+      parameters:
+        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+        - $ref: 'common/header.yaml#/components/parameters/CorrelationIdHeader'
+      operationId: createCategory
+      tags:
+          - Category
+      requestBody:
+        description: Category details to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createCategoryRequest'
+      responses:
+        '201':
+          description: Category created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      $ref: 'common/security.yaml#/components/securitySchemes/ApiKeyAuth'
+  schemas:
+    CategoryResponse:
+      type: object
+      properties:
+        id:
+          $ref: 'common/schemas.yaml#/components/schemas/Id'
+        name:
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
+        description:
+          $ref: 'common/schemas.yaml#/components/schemas/Description'
+    createCategoryRequest:
+      type: object
+      properties:
+        name:
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
+        description:
+          $ref: 'common/schemas.yaml#/components/schemas/Description'
+      required:
+        - name

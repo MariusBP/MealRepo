@@ -13,21 +13,30 @@ components:
       example: 1
     Name:
       type: string
+      required: true
       minLength: 1
       maxLength: 100
-      example: "Name of the item"
+      example: Name of the item
     Picture:
       type: string
       format: uri
-      example: "https://example.com/images/salad.jpg"
+      example: https://example.com/images/imagename.jpg
     Description:
       type: string
-      maxLength: 500
-      example: "A diet that excludes meat and fish but includes other animal products"
+      maxLength: 255
+      example: A description of the item, providing details about its features and characteristics.
     Recipe:
       type: string
       maxLength: 2000
-      example: "Mix all ingredients and cook for 30 minutes."
+      example: Mix all ingredients and cook for 30 minutes.
     PrepTime:
       type: integer
+      description: Preparation time in minutes
       minimum: 0
+      default: 0
+      example: 30
+    CreatedDate:
+      type: string
+      format: date
+      description: Date the item was created.
+      example: 2023-10-01
