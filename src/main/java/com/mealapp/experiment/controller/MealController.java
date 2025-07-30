@@ -1,8 +1,9 @@
 package com.mealapp.experiment.controller;
 
-import com.mealapp.openapi.api.MealApi;
-import com.mealapp.openapi.model.ListMealResponse;
-import com.mealapp.openapi.model.ReadMealResponse;
+
+import com.mealapp.openapi.meal.api.MealApi;
+import com.mealapp.openapi.meal.model.ListMealResponse;
+import com.mealapp.openapi.meal.model.ReadMealResponse;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

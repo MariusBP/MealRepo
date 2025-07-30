@@ -125,8 +125,8 @@
 							<skipValidateSpec>false</skipValidateSpec>
 							<generatorName>spring</generatorName>
 							<output>${project.build.directory}/generated-sources/openapi</output>
-							<modelPackage>com.mealapp.openapi.model</modelPackage>
-							<apiPackage>com.mealapp.openapi.api</apiPackage>
+							<modelPackage>com.mealapp.openapi.meal.model</modelPackage>
+							<apiPackage>com.mealapp.openapi.meal.api</apiPackage>
 							<configOptions>
 								<useSpringBoot3>true</useSpringBoot3>
 								<interfaceOnly>true</interfaceOnly>
@@ -144,8 +144,8 @@
 							<skipValidateSpec>false</skipValidateSpec>
 							<generatorName>spring</generatorName>
 							<output>${project.build.directory}/generated-sources/openapi</output>
-							<modelPackage>com.mealApp.openapi.model</modelPackage>
-							<apiPackage>com.mealApp.openapi.api</apiPackage>
+							<modelPackage>com.mealapp.openapi.diet.model</modelPackage>
+							<apiPackage>com.mealapp.openapi.diet.api</apiPackage>
 							<configOptions>
 								<useSpringBoot3>true</useSpringBoot3>
 								<interfaceOnly>true</interfaceOnly>
@@ -163,8 +163,8 @@
 							<skipValidateSpec>false</skipValidateSpec>
 							<generatorName>spring</generatorName>
 							<output>${project.build.directory}/generated-sources/openapi</output>
-							<modelPackage>com.mealApp.openapi.model</modelPackage>
-							<apiPackage>com.mealApp.openapi.api</apiPackage>
+							<modelPackage>com.mealapp.openapi.category.model</modelPackage>
+							<apiPackage>com.mealapp.openapi.category.api</apiPackage>
 							<configOptions>
 								<useSpringBoot3>true</useSpringBoot3>
 								<interfaceOnly>true</interfaceOnly>
