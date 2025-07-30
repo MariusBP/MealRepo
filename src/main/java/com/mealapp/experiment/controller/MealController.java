@@ -1,18 +1,24 @@
 package com.mealapp.experiment.controller;
 
-
-
 import com.mealapp.openapi.api.MealApi;
 import com.mealapp.openapi.model.ListMealResponse;
 import com.mealapp.openapi.model.ReadMealResponse;
+import jakarta.annotation.PostConstruct;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
+@AllArgsConstructor
 public class MealController implements MealApi {
 
+    @PostConstruct
+    public void init() {
+        System.out.println("MealController initialized");
+    }
 
     @Override
     public ResponseEntity<ReadMealResponse> getMeal(
@@ -21,8 +27,10 @@ public class MealController implements MealApi {
             String contentType,
             String xRequestID,
             String userAgent) {
-        // Your logic here
-        return ResponseEntity.ok(new ReadMealResponse());
+
+        System.out.println("getMeal called with id: " + id);
+        ReadMealResponse response = new ReadMealResponse();
+        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -33,7 +41,8 @@ public class MealController implements MealApi {
             String contentType,
             String xRequestID,
             String userAgent) {
-        // Your logic here
+
+        System.out.println("listMeals called with dietId: " + dietId + ", categoryIdList: " + categoryIdList);
         return ResponseEntity.ok(List.of());
     }
 }

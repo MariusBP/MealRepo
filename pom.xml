@@ -122,7 +122,7 @@
 						</goals>
 						<configuration>
 							<inputSpec>${project.basedir}/src/main/resources/openapi/meal.yaml</inputSpec>
-							<skipValidateSpec>true</skipValidateSpec>
+							<skipValidateSpec>false</skipValidateSpec>
 							<generatorName>spring</generatorName>
 							<output>${project.build.directory}/generated-sources/openapi</output>
 							<modelPackage>com.mealapp.openapi.model</modelPackage>
