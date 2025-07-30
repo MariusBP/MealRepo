@@ -28,6 +28,8 @@ paths:
     get:
       summary: Get list of diets
       operationId: listDiets
+      tags:
+          - Diet
       parameters:
         - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
         - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
@@ -66,9 +68,6 @@ components:
       $ref: 'common/security.yaml#/components/securitySchemes/ApiKeyAuth'
   schemas:
     listDietResponse:
-      required:
-        - id
-        - name
       type: object
       properties:
         id:
@@ -79,8 +78,3 @@ components:
           $ref: 'common/schemas.yaml#/components/schemas/Picture'
         description:
           $ref: 'common/schemas.yaml#/components/schemas/Description'
-      example:
-        id: 1
-        name: "Vegetarian"
-        picture: "https://example.com/images/vegetarian-diet.jpg"
-        description: "A diet that excludes meat and fish but includes other animal products"
