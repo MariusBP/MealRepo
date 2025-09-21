@@ -1,10 +1,7 @@
 package com.mealapp.experiment.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -12,6 +9,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "meal")
 public class Meal {
