@@ -19,7 +19,7 @@ public class MealServiceImp implements MealService{
     private final ServiceMapper mapper;
 
     @Override
-    public ReadMealResponse getMeal(Long id) {
+    public ReadMealResponse getMeal(Integer id) {
         return mapper.mealToReadMealResponse(mealRepository.findById(id).orElseThrow());
     }
 

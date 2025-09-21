@@ -40,13 +40,17 @@ public class Meal {
     @Column(name = "date_created")
     private LocalDate createdDate;
 
-
-    @ManyToMany(mappedBy = "meals")
+    @ManyToMany
+    @JoinTable(
+            name = "category_meal",
+            joinColumns = @JoinColumn(name = "meal_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
     private Set<Category> categories;
 
     @ManyToMany
     @JoinTable(
-            name = "ingredient_to_meal",
+            name = "ingredient_meal",
             joinColumns = @JoinColumn(name = "meal_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )

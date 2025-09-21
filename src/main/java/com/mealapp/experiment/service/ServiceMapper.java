@@ -20,18 +20,12 @@ import java.net.URI;
 )
 public interface ServiceMapper {
 
-    @Mapping(target = "id", source = "id", qualifiedByName = "integerToLong")
     @Mapping(target = "picture", source = "picture", qualifiedByName = "stringToUri")
     ReadMealResponse mealToReadMealResponse(Meal meal);
 
-    @Mapping(target = "id", source = "id", qualifiedByName = "integerToLong")
     @Mapping(target = "picture", source = "picture", qualifiedByName = "stringToUri")
     ListMealResponse mealToListMealResponse(Meal meal);
 
-    @Named("integerToLong")
-    default Long integerToLong(Integer value) {
-        return value != null ? value.longValue() : null;
-    }
 
     @Named("stringToUri")
     default URI stringToUri(String value) {

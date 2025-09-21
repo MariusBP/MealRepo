@@ -44,7 +44,7 @@ public class MealController implements MealApi {
         getApiKeyFromRequest();
 
         System.out.println("getMeal called with id: " + id);
-        return ResponseEntity.ok(mealService.getMeal(Long.valueOf(id)));
+        return ResponseEntity.ok(mealService.getMeal(id));
     }
 
     @Override
