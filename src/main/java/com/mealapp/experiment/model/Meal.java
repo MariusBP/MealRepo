@@ -2,12 +2,15 @@ package com.mealapp.experiment.model;
 
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Data;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 @Table(name = "meal")
@@ -37,5 +40,17 @@ public class Meal {
 
     @Column(name = "date_created")
     private LocalDate createdDate;
+
+
+    @ManyToMany(mappedBy = "meals")
+    private Set<Category> categories;
+
+    @ManyToMany
+    @JoinTable(
+            name = "ingredient_to_meal",
+            joinColumns = @JoinColumn(name = "meal_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private Set<Ingredient> ingredients;
 
 }
