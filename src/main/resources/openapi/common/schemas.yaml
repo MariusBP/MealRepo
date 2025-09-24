@@ -9,6 +9,7 @@ components:
     Id:
       type: integer
       format: int64
+      required: true
       minimum: 1
       example: 1
     Name:

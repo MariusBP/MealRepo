@@ -3,8 +3,10 @@ package com.mealapp.experiment.controller;
 
 import com.mealapp.experiment.service.meal.MealService;
 import com.mealapp.openapi.meal.api.MealApi;
+import com.mealapp.openapi.meal.model.CreateMealRequest;
 import com.mealapp.openapi.meal.model.ListMealResponse;
 import com.mealapp.openapi.meal.model.ReadMealResponse;
+import com.mealapp.openapi.meal.model.UpdateMealRequest;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import java.util.List;
 
 
 @RestController
+@RequestMapping("/api")
 public class MealController implements MealApi {
 
     @Autowired
@@ -51,15 +54,44 @@ public class MealController implements MealApi {
     public ResponseEntity<List<ListMealResponse>> listMeals(
             String accept,
             Integer dietId,
-            List<Integer> categoryIdList,
+            String contentType,
+            String xRequestID,
+            String userAgent,
+            List<Integer> categoryIdList) {
+
+        getApiKeyFromRequest();
+
+        System.out.println("listMeals called with dietId: " + dietId + ", categoryIdList: " + categoryIdList);
+
+        return ResponseEntity.ok(mealService.listMeals(dietId, categoryIdList));
+    }
+
+    @Override
+    public ResponseEntity<ReadMealResponse> createMeal(
+            String accept,
+            CreateMealRequest createMealRequest,
             String contentType,
             String xRequestID,
             String userAgent) {
 
         getApiKeyFromRequest();
 
-        System.out.println("listMeals called with dietId: " + dietId + ", categoryIdList: " + categoryIdList);
-        return ResponseEntity.ok(mealService.listMeals(dietId, categoryIdList));
+        System.out.println("createMeal called with request: " + createMealRequest);
+        return ResponseEntity.ok(null);
+    }
+
+    @Override
+    public ResponseEntity<ReadMealResponse> updateMeal(
+            String accept,
+            UpdateMealRequest updateMealRequest,
+            String contentType,
+            String xRequestID,
+            String userAgent) {
+
+        getApiKeyFromRequest();
+
+        System.out.println("updateMeal called with request: " + updateMealRequest);
+        return ResponseEntity.ok(null);
     }
 
     private void getApiKeyFromRequest() {
