@@ -24,9 +24,9 @@ security:
   - ApiKeyAuth: []
 
 paths:
-  /api/meals:
+  /meals:
     get:
-      summary: Get list of meals
+      summary: Get list of meals by diet ID and category ID
       parameters:
         - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
         - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
@@ -53,7 +53,7 @@ paths:
         '500':
           $ref: 'common/error.yaml#/components/responses/InternalServerError'
 
-  /api/meal:
+  /meal:
     get:
       summary: Get meal by ID
       parameters:
@@ -77,6 +77,62 @@ paths:
                 $ref: '#/components/schemas/readMealResponse'
         '400':
           $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '404':
+          $ref: 'common/error.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
+    post:
+      summary: Create meal
+      parameters:
+        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+      operationId: createMeal
+      tags:
+        - meal
+      description: |-
+        To create a meal, use the createMeal endpoint and provide the meal details in the request body. 
+        This will submit all necessary meal information for creation.
+      requestBody:
+        $ref: '#/components/requestBodies/createMealRequest'
+      responses:
+        '200':
+          description: Meal created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/readMealResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
+    patch:
+      summary: Update meal
+      parameters:
+        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+      operationId: updateMeal
+      tags:
+        - meal
+      description: |-
+        Updates an existing meal with the provided details.
+        Only the fields included in the request body will be updated.
+      requestBody:
+        $ref: '#/components/requestBodies/updateMealRequest'
+      responses:
+        '200':
+          description: Meal updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/readMealResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '404':
+          $ref: 'common/error.yaml#/components/responses/NotFound'
         '500':
           $ref: 'common/error.yaml#/components/responses/InternalServerError'
 
@@ -84,51 +140,103 @@ components:
   securitySchemes:
     ApiKeyAuth:
       $ref: 'common/security.yaml#/components/securitySchemes/ApiKeyAuth'
+  requestBodies:
+    createMealRequest:
+      description: Request body for creating a new meal
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/createMealRequest'
+    updateMealRequest:
+      description: Request body for updating an existing meal
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/updateMealRequest'
   schemas:
+    baseMeal:
+      type: object
+      properties:
+        name:
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
+        picture:
+          $ref: 'common/schemas.yaml#/components/schemas/Picture'
+        description:
+          $ref: 'common/schemas.yaml#/components/schemas/Description'
+        recipe:
+          $ref: 'common/schemas.yaml#/components/schemas/Recipe'
+        prepTime:
+          $ref: 'common/schemas.yaml#/components/schemas/PrepTime'
     listMealResponse:
-      type: object
-      properties:
-        id:
-          $ref: 'common/schemas.yaml#/components/schemas/Id'
-        name:
-          $ref: 'common/schemas.yaml#/components/schemas/Name'
-        picture:
-          $ref: 'common/schemas.yaml#/components/schemas/Picture'
-        description:
-          $ref: 'common/schemas.yaml#/components/schemas/Description'
-        recipe:
-          $ref: 'common/schemas.yaml#/components/schemas/Recipe'
-        prepTime:
-          $ref: 'common/schemas.yaml#/components/schemas/PrepTime'
+      allOf:
+        - $ref: '#/components/schemas/baseMeal'
+        - type: object
+          properties:
+            id:
+              $ref: 'common/schemas.yaml#/components/schemas/Id'
     readMealResponse:
-      type: object
-      properties:
-        id:
-          $ref: 'common/schemas.yaml#/components/schemas/Id'
-        name:
-          $ref: 'common/schemas.yaml#/components/schemas/Name'
-        picture:
-          $ref: 'common/schemas.yaml#/components/schemas/Picture'
-        description:
-          $ref: 'common/schemas.yaml#/components/schemas/Description'
-        recipe:
-          $ref: 'common/schemas.yaml#/components/schemas/Recipe'
-        prepTime:
-          $ref: 'common/schemas.yaml#/components/schemas/PrepTime'
-        diets:
-          $ref: '#/components/schemas/DietObject'
-        ingredient:
-          type: array
-          items:
-            $ref: '#/components/schemas/IngredientObject'
-        allergies:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllergyObject'
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/CategoryObject'
+      allOf:
+        - $ref: '#/components/schemas/baseMeal'
+        - type: object
+          properties:
+            id:
+              $ref: 'common/schemas.yaml#/components/schemas/Id'
+            diet:
+              $ref: '#/components/schemas/DietObject'
+            ingredients:
+              type: array
+              items:
+                $ref: '#/components/schemas/IngredientObject'
+            allergies:
+              type: array
+              items:
+                $ref: '#/components/schemas/AllergyObject'
+            categories:
+              type: array
+              items:
+                $ref: '#/components/schemas/CategoryObject'
+    createMealRequest:
+      allOf:
+        - $ref: '#/components/schemas/baseMeal'
+        - type: object
+          properties:
+            diets:
+              $ref: '#/components/schemas/DietObject'
+            ingredients:
+              type: array
+              items:
+                $ref: '#/components/schemas/IngredientObject'
+            allergies:
+              type: array
+              items:
+                $ref: '#/components/schemas/AllergyObject'
+            categories:
+              type: array
+              items:
+                $ref: '#/components/schemas/CategoryObject'
+    updateMealRequest:
+      allOf:
+        - $ref: '#/components/schemas/baseMeal'
+        - type: object
+          properties:
+            id:
+              $ref: 'common/schemas.yaml#/components/schemas/Id'
+            diets:
+              $ref: '#/components/schemas/DietObject'
+            ingredients:
+              type: array
+              items:
+                $ref: '#/components/schemas/IngredientObject'
+            allergies:
+              type: array
+              items:
+                $ref: '#/components/schemas/AllergyObject'
+            categories:
+              type: array
+              items:
+                $ref: '#/components/schemas/CategoryObject'
     DietObject:
       type: object
       properties:

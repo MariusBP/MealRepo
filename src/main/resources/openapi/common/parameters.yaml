@@ -16,8 +16,8 @@ components:
     CategoryIdListParam:
       name: category_id_list
       in: query
-      required: true
       style: form
+      required: false
       explode: true
       schema:
         type: array

@@ -3,20 +3,25 @@ package com.mealapp.experiment.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 
 @Getter
 @Setter
 @Builder
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "diet")
-public class Diet {
+@Entity
+@Table(name = "category")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(nullable = false, length = 255)
     private String name;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<Meal> meals;
 }
