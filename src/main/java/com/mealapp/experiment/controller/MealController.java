@@ -47,7 +47,7 @@ public class MealController implements MealApi {
         getApiKeyFromRequest();
 
         System.out.println("getMeal called with id: " + id);
-        return ResponseEntity.ok(mealService.getMeal(id));
+        return ResponseEntity.ok(mealService.getMeal(id.longValue()));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class MealController implements MealApi {
 
         System.out.println("listMeals called with dietId: " + dietId + ", categoryIdList: " + categoryIdList);
 
-        return ResponseEntity.ok(mealService.listMeals(dietId, categoryIdList));
+        return ResponseEntity.ok(mealService.listMeals(dietId.longValue(), null));
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.mealapp.experiment.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 @Getter
 @Setter
 @Builder
@@ -14,7 +15,7 @@ public class Diet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "name")
     private String name;

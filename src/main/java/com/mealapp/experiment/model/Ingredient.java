@@ -2,6 +2,8 @@ package com.mealapp.experiment.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -16,7 +18,7 @@ public class Ingredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "name", nullable = false, length = 255)
     private String name;
@@ -39,6 +41,11 @@ public class Ingredient {
     @Column(name = "sodium")
     private Double sodium;
 
-    @ManyToMany(mappedBy = "ingredients")
-    private Set<Allergy> allergies;
+    @ManyToMany
+    @JoinTable(
+            name = "allergy_ingredient",
+            joinColumns = @JoinColumn(name = "ingredient_id"),
+            inverseJoinColumns = @JoinColumn(name = "allergy_id")
+    )
+    private Set<Allergy> allergies = new HashSet<>();
 }

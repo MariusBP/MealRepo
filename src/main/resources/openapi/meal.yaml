@@ -183,9 +183,9 @@ components:
           properties:
             id:
               $ref: 'common/schemas.yaml#/components/schemas/Id'
-            diets:
+            diet:
               $ref: '#/components/schemas/DietObject'
-            ingredient:
+            ingredients:
               type: array
               items:
                 $ref: '#/components/schemas/IngredientObject'

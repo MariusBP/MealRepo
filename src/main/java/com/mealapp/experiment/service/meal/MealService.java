@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MealService {
 
-    ReadMealResponse getMeal(Integer id);
+    ReadMealResponse getMeal(Long id);
 
-    List<ListMealResponse> listMeals(Integer dietId, List<Integer> categoryIdList);
+    List<ListMealResponse> listMeals(Long dietId, List<Long> categoryIdList);
 }

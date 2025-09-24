@@ -9,11 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MealRepository extends JpaRepository<Meal, Integer> {
+public interface MealRepository extends JpaRepository<Meal, Long> {
 
-    @EntityGraph(attributePaths = {"diet", "ingredients", "categories"})
-    Optional<Meal> findById(Integer id);
+    List<Meal> findByDietIdAndCategories_IdIn(Long dietId, List<Long> categoryIds);
 
-    List<Meal> findByDietId(Integer dietId);
-
+    @EntityGraph(attributePaths = {"ingredients", "categories", "diet"})
+    Optional<Meal> findWithAllById(Long id);
 }

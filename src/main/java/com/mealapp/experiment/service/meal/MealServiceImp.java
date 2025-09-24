@@ -19,13 +19,12 @@ public class MealServiceImp implements MealService{
     private final ServiceMapper mapper;
 
     @Override
-    public ReadMealResponse getMeal(Integer id) {
-        return mapper.mealToReadMealResponse(mealRepository.findById(id).orElseThrow());
+    public ReadMealResponse getMeal(Long id) {
+        return mapper.mealToReadMealResponse(mealRepository.findWithAllById(id).orElseThrow());
     }
 
     @Override
-    public List<ListMealResponse> listMeals(Integer dietId, List<Integer> categoryIdList) {
+    public List<ListMealResponse> listMeals(Long dietId, List<Long> categoryIdList) {
         return List.of();
     }
 }
-
