@@ -1,0 +1,213 @@
+openapi: 3.0.3
+info:
+  title: Ingredient Service API
+  version: 1.0.0
+  description: |-
+    API for managing ingredients and their nutritional information.
+    This contract describes a RESTful API for an ingredient service.
+    The API allows clients to:
+      - Retrieve a list of ingredients, optionally filtered by allergy.
+      - Retrieve detailed information about a specific ingredient by its ID.
+      - Create new ingredients with nutritional data and allergy associations.
+      - Update existing ingredients with new information.
+    
+    The API requires authentication via an API key provided in the X-API-Key header. 
+    The contract specifies request parameters, expected responses, and data schemas for ingredients, allergies, and nutritional information.
+
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local development server
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /ingredients:
+    get:
+      summary: Get list of ingredients
+      parameters:
+        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+        - $ref: 'common/parameters.yaml#/components/parameters/IngredientIdParam'
+      operationId: listIngredients
+      tags:
+        - ingredient
+      description: |-
+        Retrieves a list of ingredients, optionally filtered by allergy associations.
+      responses:
+        '200':
+          description: List of ingredients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/listIngredientResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
+
+  /ingredient:
+    get:
+      summary: Get ingredient by ID
+      parameters:
+        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+        - $ref: 'common/parameters.yaml#/components/parameters/IngredientIdParam'
+      operationId: getIngredient
+      tags:
+        - ingredient
+      description: |-
+          Retrieves detailed information about a specific ingredient by its ID.
+          The response includes ingredient details, nutritional information, and associated allergies.
+      responses:
+        '200':
+          description: Ingredient details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/readIngredientResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '404':
+          $ref: 'common/error.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
+    post:
+      summary: Create ingredient
+      parameters:
+        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+      operationId: createIngredient
+      tags:
+        - ingredient
+      description: |-
+        To create an ingredient, use the createIngredient endpoint and provide the ingredient details in the request body. 
+        This will submit all necessary ingredient information including nutritional data and allergy associations.
+      requestBody:
+        $ref: '#/components/requestBodies/createIngredientRequest'
+      responses:
+        '200':
+          description: Ingredient created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/readIngredientResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
+    patch:
+      summary: Update ingredient
+      parameters:
+        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+      operationId: updateIngredient
+      tags:
+        - ingredient
+      description: |-
+        Updates an existing ingredient with the provided details.
+        Only the fields included in the request body will be updated.
+      requestBody:
+        $ref: '#/components/requestBodies/updateIngredientRequest'
+      responses:
+        '200':
+          description: Ingredient updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/readIngredientResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '404':
+          $ref: 'common/error.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      $ref: 'common/security.yaml#/components/securitySchemes/ApiKeyAuth'
+  requestBodies:
+    createIngredientRequest:
+      description: Request body for creating a new ingredient
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/createIngredientRequest'
+    updateIngredientRequest:
+      description: Request body for updating an existing ingredient
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/updateIngredientRequest'
+  schemas:
+    baseIngredient:
+      type: object
+      properties:
+        name:
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
+        kcal:
+          $ref: 'common/schemas.yaml#/components/schemas/NutritionalValue'
+        carb:
+          $ref: 'common/schemas.yaml#/components/schemas/NutritionalValue'
+        fat:
+          $ref: 'common/schemas.yaml#/components/schemas/NutritionalValue'
+        protein:
+          $ref: 'common/schemas.yaml#/components/schemas/NutritionalValue'
+        fiber:
+          $ref: 'common/schemas.yaml#/components/schemas/NutritionalValue'
+        sodium:
+          $ref: 'common/schemas.yaml#/components/schemas/NutritionalValue'
+    listIngredientResponse:
+      allOf:
+        - $ref: '#/components/schemas/baseIngredient'
+        - type: object
+          properties:
+            id:
+              $ref: 'common/schemas.yaml#/components/schemas/Id'
+            allergies:
+              type: array
+              items:
+                $ref: '#/components/schemas/AllergyObject'
+    readIngredientResponse:
+      allOf:
+        - $ref: '#/components/schemas/baseIngredient'
+        - type: object
+          properties:
+            id:
+              $ref: 'common/schemas.yaml#/components/schemas/Id'
+            allergies:
+              type: array
+              items:
+                $ref: '#/components/schemas/AllergyObject'
+    createIngredientRequest:
+      allOf:
+        - $ref: '#/components/schemas/baseIngredient'
+        - type: object
+    updateIngredientRequest:
+      allOf:
+        - $ref: '#/components/schemas/baseIngredient'
+        - type: object
+    AllergyObject:
+      type: object
+      properties:
+        id:
+          $ref: 'common/schemas.yaml#/components/schemas/Id'
+        name:
+          $ref: 'common/schemas.yaml#/components/schemas/Name'

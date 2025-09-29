@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
 
-    List<Ingredient> findByAllergies_Id(List<Long> allergyIdList);
+    List<Ingredient> findByAllergiesId(List<Long> allergyIdList);
 
 }

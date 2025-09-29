@@ -152,7 +152,16 @@
 								<useSpringBoot3>true</useSpringBoot3>
 								<interfaceOnly>true</interfaceOnly>
 								<useTags>true</useTags>
+								<resolveAllOf>true</resolveAllOf>
+								<flattenInlineComposedSchemas>true</flattenInlineComposedSchemas>
+								<skipDefaultInterface>true</skipDefaultInterface>
 							</configOptions>
+							<globalProperties>
+								<skipFormModel>false</skipFormModel>
+								<generateModels>true</generateModels>
+								<generateApis>true</generateApis>
+								<generateSupportingFiles>false</generateSupportingFiles>
+							</globalProperties>
 						</configuration>
 					</execution>
 					<execution>
@@ -171,7 +180,16 @@
 								<useSpringBoot3>true</useSpringBoot3>
 								<interfaceOnly>true</interfaceOnly>
 								<useTags>true</useTags>
+								<resolveAllOf>true</resolveAllOf>
+								<flattenInlineComposedSchemas>true</flattenInlineComposedSchemas>
+								<skipDefaultInterface>true</skipDefaultInterface>
 							</configOptions>
+							<globalProperties>
+								<skipFormModel>false</skipFormModel>
+								<generateModels>true</generateModels>
+								<generateApis>true</generateApis>
+								<generateSupportingFiles>false</generateSupportingFiles>
+							</globalProperties>
 						</configuration>
 					</execution>
 					<execution>
@@ -190,7 +208,16 @@
 								<useSpringBoot3>true</useSpringBoot3>
 								<interfaceOnly>true</interfaceOnly>
 								<useTags>true</useTags>
+								<resolveAllOf>true</resolveAllOf>
+								<flattenInlineComposedSchemas>true</flattenInlineComposedSchemas>
+								<skipDefaultInterface>true</skipDefaultInterface>
 							</configOptions>
+							<globalProperties>
+								<skipFormModel>false</skipFormModel>
+								<generateModels>true</generateModels>
+								<generateApis>true</generateApis>
+								<generateSupportingFiles>false</generateSupportingFiles>
+							</globalProperties>
 						</configuration>
 					</execution>
 				</executions>

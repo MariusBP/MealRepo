@@ -57,4 +57,9 @@ public class Meal {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<Category> categories = new HashSet<>();
+
+    @PrePersist
+    private void onCreate() {
+        this.createdDate = LocalDate.now();
+    }
 }
