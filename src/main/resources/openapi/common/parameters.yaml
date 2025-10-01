@@ -12,6 +12,7 @@ components:
       required: true
       schema:
         type: integer
+        format: int64
       example: 1
     CategoryIdListParam:
       name: category_id_list
@@ -23,6 +24,7 @@ components:
         type: array
         items:
           type: integer
+          format: int64
         example: [ 1, 2, 3 ]
     MealIdParam:
       name: id
@@ -30,4 +32,26 @@ components:
       required: true
       schema:
         type: integer
+        format: int64
       example: 1
+    IngredientIdParam:
+      name: id
+      in: query
+      required: true
+      schema:
+        type: integer
+        format: int64
+      example: 1
+    AllergyIdListParam:
+      name: allergy_id_list
+      in: query
+      style: form
+      required: false
+      explode: true
+      schema:
+        type: array
+        items:
+          type: integer
+          format: int64
+        example: [ 1, 2, 3 ]
+

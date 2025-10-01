@@ -1,6 +1,8 @@
 package com.mealapp.experiment.controller;
 
 
+import com.mealapp.experiment.controller.utils.ApiUtils;
+import com.mealapp.experiment.controller.utils.ControllerMapper;
 import com.mealapp.experiment.service.meal.MealService;
 import com.mealapp.openapi.meal.api.MealApi;
 import com.mealapp.openapi.meal.model.CreateMealRequest;
@@ -10,7 +12,6 @@ import com.mealapp.openapi.meal.model.UpdateMealRequest;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,43 +28,46 @@ public class MealController implements MealApi {
     @Autowired
     private HttpServletRequest request;
 
-    @Value("${authentication.jwt.secret}")
-    private String XApiKey;
+    @Autowired
+    private ApiUtils apiUtils;
+
+    @Autowired
+    private ControllerMapper mapper;
 
     @PostConstruct
     public void init() {
         System.out.println("MealController initialized");
-        System.out.println("XApiKey configured: " + (XApiKey != null ? "Yes" : "No"));
     }
 
     @Override
     public ResponseEntity<ReadMealResponse> getMeal(
             String accept,
-            Integer id,
+            Long id,
             String contentType,
             String xRequestID,
             String userAgent) {
 
-        getApiKeyFromRequest();
+
+        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
 
         System.out.println("getMeal called with id: " + id);
-        return ResponseEntity.ok(mealService.getMeal(id.longValue()));
+        return ResponseEntity.ok(mealService.getMeal(id));
     }
 
     @Override
     public ResponseEntity<List<ListMealResponse>> listMeals(
             String accept,
-            Integer dietId,
+            Long dietId,
             String contentType,
             String xRequestID,
             String userAgent,
-            List<Integer> categoryIdList) {
+            List<Long> categoryIdList) {
 
-        getApiKeyFromRequest();
+        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
 
         System.out.println("listMeals called with dietId: " + dietId + ", categoryIdList: " + categoryIdList);
 
-        return ResponseEntity.ok(mealService.listMeals(dietId.longValue(), null));
+        return ResponseEntity.ok(mealService.listMeals(dietId, categoryIdList));
     }
 
     @Override
@@ -74,10 +78,11 @@ public class MealController implements MealApi {
             String xRequestID,
             String userAgent) {
 
-        getApiKeyFromRequest();
+        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
 
+        ReadMealResponse readMealResponse = mealService.createMeal(mapper.createMealRequestToMeal(createMealRequest));
         System.out.println("createMeal called with request: " + createMealRequest);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(readMealResponse);
     }
 
     @Override
@@ -88,17 +93,12 @@ public class MealController implements MealApi {
             String xRequestID,
             String userAgent) {
 
-        getApiKeyFromRequest();
+        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
+
+        ReadMealResponse readMealResponse = mealService.updateMeal(
+                updateMealRequest.getId(), mapper.updateMealRequestToMeal(updateMealRequest));
 
         System.out.println("updateMeal called with request: " + updateMealRequest);
-        return ResponseEntity.ok(null);
-    }
-
-    private void getApiKeyFromRequest() {
-        String apiKeyFromHeader = request.getHeader("X-API-Key");
-
-        if (!XApiKey.equals(apiKeyFromHeader)) {
-            throw new RuntimeException("Invalid API key");
-        }
+        return ResponseEntity.ok(readMealResponse);
     }
 }

@@ -17,6 +17,15 @@ public class Diet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "recipe")
+    private String recipe;
+
+    @Column(name = "picture")
+    private String picture;
 }

@@ -15,25 +15,30 @@ components:
     Name:
       type: string
       required: true
+      description: The name of the item.
       minLength: 1
-      maxLength: 100
-      example: Name of the item
+      maxLength: 255
+      example: Spaghetti Bolognese
     Picture:
       type: string
-      format: uri
+      maxLength: 255
+      description: URL to an image representing the item.
       example: https://example.com/images/imagename.jpg
     Description:
       type: string
+      description: A description of the item, providing details about its features and characteristics.
       maxLength: 255
-      example: A description of the item, providing details about its features and characteristics.
+      example: A delicious traditional Italian pasta dish with rich meat sauce, topped with fresh herbs and parmesan cheese.
     Recipe:
       type: string
-      maxLength: 2000
+      maxLength: 255
+      description: Step by step instructions to prepare the item.
       example: Mix all ingredients and cook for 30 minutes.
     PrepTime:
       type: integer
       description: Preparation time in minutes
       minimum: 0
+      maximum: 9999
       default: 0
       example: 30
     CreatedDate:
@@ -41,3 +46,10 @@ components:
       format: date
       description: Date the item was created.
       example: 2023-10-01
+    NutritionalValue:
+      type: number
+      format: double
+      minimum: 0
+      maximum: 99999.99
+      description: Nutritional value per 100g
+      example: 25.5
