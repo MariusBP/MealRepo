@@ -9,8 +9,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class OpenApiConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
         registry.addResourceHandler("/openapi/**")
-                .addResourceLocations("classpath:/openapi/");
+                .addResourceLocations("file:target/bundled-openapi/");
     }
 
     @Override

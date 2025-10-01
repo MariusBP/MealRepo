@@ -152,12 +152,8 @@
 								<useSpringBoot3>true</useSpringBoot3>
 								<interfaceOnly>true</interfaceOnly>
 								<useTags>true</useTags>
-								<resolveAllOf>true</resolveAllOf>
-								<flattenInlineComposedSchemas>true</flattenInlineComposedSchemas>
-								<skipDefaultInterface>true</skipDefaultInterface>
 							</configOptions>
 							<globalProperties>
-								<skipFormModel>false</skipFormModel>
 								<generateModels>true</generateModels>
 								<generateApis>true</generateApis>
 								<generateSupportingFiles>false</generateSupportingFiles>
@@ -180,12 +176,8 @@
 								<useSpringBoot3>true</useSpringBoot3>
 								<interfaceOnly>true</interfaceOnly>
 								<useTags>true</useTags>
-								<resolveAllOf>true</resolveAllOf>
-								<flattenInlineComposedSchemas>true</flattenInlineComposedSchemas>
-								<skipDefaultInterface>true</skipDefaultInterface>
 							</configOptions>
 							<globalProperties>
-								<skipFormModel>false</skipFormModel>
 								<generateModels>true</generateModels>
 								<generateApis>true</generateApis>
 								<generateSupportingFiles>false</generateSupportingFiles>
@@ -208,16 +200,80 @@
 								<useSpringBoot3>true</useSpringBoot3>
 								<interfaceOnly>true</interfaceOnly>
 								<useTags>true</useTags>
-								<resolveAllOf>true</resolveAllOf>
-								<flattenInlineComposedSchemas>true</flattenInlineComposedSchemas>
-								<skipDefaultInterface>true</skipDefaultInterface>
 							</configOptions>
 							<globalProperties>
-								<skipFormModel>false</skipFormModel>
 								<generateModels>true</generateModels>
 								<generateApis>true</generateApis>
 								<generateSupportingFiles>false</generateSupportingFiles>
 							</globalProperties>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>io.swagger.codegen.v3</groupId>
+				<artifactId>swagger-codegen-maven-plugin</artifactId>
+				<version>3.0.46</version>
+				<executions>
+					<execution>
+						<id>bundle-meal-spec</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/meal.yaml</inputSpec>
+							<language>openapi-yaml</language>
+							<output>${project.build.directory}/bundled-openapi</output>
+							<configOptions>
+								<outputFile>meal.yaml</outputFile>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>bundle-diet-spec</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/diet.yaml</inputSpec>
+							<language>openapi-yaml</language>
+							<output>${project.build.directory}/bundled-openapi</output>
+							<configOptions>
+								<outputFile>diet.yaml</outputFile>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>bundle-category-spec</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/category.yaml</inputSpec>
+							<language>openapi-yaml</language>
+							<output>${project.build.directory}/bundled-openapi</output>
+							<configOptions>
+								<outputFile>category.yaml</outputFile>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>bundle-ingredient-spec</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/ingredient.yaml</inputSpec>
+							<language>openapi-yaml</language>
+							<output>${project.build.directory}/bundled-openapi</output>
+							<configOptions>
+								<outputFile>ingredient.yaml</outputFile>
+							</configOptions>
 						</configuration>
 					</execution>
 				</executions>

@@ -21,8 +21,8 @@ components:
       example: Spaghetti Bolognese
     Picture:
       type: string
-      format: uri
       maxLength: 255
+      description: URL to an image representing the item.
       example: https://example.com/images/imagename.jpg
     Description:
       type: string

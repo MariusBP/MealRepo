@@ -38,8 +38,10 @@ public class MealServiceImp implements MealService {
         log.info("Creating new meal with name: {}", createMealRequest.getName());
         Meal savedMeal = mealRepository.save(createMealRequest);
 
-        log.info("Successfully created meal with id: {}", savedMeal.getId());
-        return mapper.mealToReadMealResponse(savedMeal);
+        Meal mealWithAllergies = mealRepository.findAllById(savedMeal.getId())
+                .orElseThrow(() -> new RuntimeException("Failed to retrieve saved meal"));
+
+        return mapper.mealToReadMealResponse(mealWithAllergies);
     }
 
     @Override
@@ -50,9 +52,9 @@ public class MealServiceImp implements MealService {
                 .orElseThrow(ExceptionUtils.exception(HttpStatus.NOT_FOUND, "Not found meal with id: " + id));
 
         mapper.merge(updateMealRequest, existingMeal);
-        Meal savedMeal = mealRepository.save(existingMeal);
+        Meal mealWithAllergies = mealRepository.findAllById(existingMeal.getId())
+                .orElseThrow(() -> new RuntimeException("Failed to retrieve updated meal"));
 
-        log.info("Successfully updated meal with id: {}", savedMeal.getId());
-        return mapper.mealToReadMealResponse(savedMeal);
+        return mapper.mealToReadMealResponse(mealWithAllergies);
     }
 }

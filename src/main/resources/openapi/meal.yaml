@@ -95,7 +95,7 @@ paths:
         To create a meal, use the createMeal endpoint and provide the meal details in the request body. 
         This will submit all necessary meal information for creation.
       requestBody:
-        $ref: '#/components/requestBodies/createMealRequest'
+        $ref: '#/components/requestBodies/CreateMealRequest'
       responses:
         '200':
           description: Meal created successfully
@@ -121,7 +121,7 @@ paths:
         Updates an existing meal with the provided details.
         Only the fields included in the request body will be updated.
       requestBody:
-        $ref: '#/components/requestBodies/updateMealRequest'
+        $ref: '#/components/requestBodies/UpdateMealRequest'
       responses:
         '200':
           description: Meal updated successfully
@@ -141,14 +141,14 @@ components:
     ApiKeyAuth:
       $ref: 'common/security.yaml#/components/securitySchemes/ApiKeyAuth'
   requestBodies:
-    createMealRequest:
+    CreateMealRequest:
       description: Request body for creating a new meal
       required: true
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/createMealRequest'
-    updateMealRequest:
+    UpdateMealRequest:
       description: Request body for updating an existing meal
       required: true
       content:
@@ -202,16 +202,12 @@ components:
         - $ref: '#/components/schemas/baseMeal'
         - type: object
           properties:
-            diets:
+            diet:
               $ref: '#/components/schemas/DietObject'
             ingredients:
               type: array
               items:
                 $ref: '#/components/schemas/IngredientObject'
-            allergies:
-              type: array
-              items:
-                $ref: '#/components/schemas/AllergyObject'
             categories:
               type: array
               items:

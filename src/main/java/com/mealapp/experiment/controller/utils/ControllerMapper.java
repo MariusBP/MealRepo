@@ -20,14 +20,10 @@ import java.net.URI;
 )
 public interface ControllerMapper {
 
-    @Mapping(target = "picture", source = "picture", qualifiedByName = "uriToString")
     Meal createMealRequestToMeal(CreateMealRequest createMealRequest);
 
-    @Mapping(target = "picture", source = "picture", qualifiedByName = "uriToString")
     Meal updateMealRequestToMeal(UpdateMealRequest updateMealRequest);
 
-    @Named("uriToString")
-    default String uriToString(URI uri) {
-        return uri != null ? uri.toString() : null;
-    }
 }
+
+

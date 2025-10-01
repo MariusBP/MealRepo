@@ -47,6 +47,7 @@ public class MealController implements MealApi {
             String xRequestID,
             String userAgent) {
 
+
         apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
 
         System.out.println("getMeal called with id: " + id);

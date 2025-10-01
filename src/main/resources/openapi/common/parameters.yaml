@@ -54,3 +54,4 @@ components:
           type: integer
           format: int64
         example: [ 1, 2, 3 ]
+
