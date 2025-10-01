@@ -5,7 +5,4 @@ public interface ServiceValidation {
     void validateDietId(Long dietId);
 
     void validateMealId(Long mealId);
-
-
-
 }
