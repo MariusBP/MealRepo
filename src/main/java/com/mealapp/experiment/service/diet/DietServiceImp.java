@@ -21,6 +21,6 @@ public class DietServiceImp implements DietService {
     @Override
     public List<ListDietResponse> listDiets() {
         List<Diet> diets = dietRepository.findAll();
-        return null;
+        return mapper.dietToListDietResponse(diets);
     }
 }

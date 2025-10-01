@@ -25,4 +25,7 @@ public class Diet {
 
     @Column(name = "recipe")
     private String recipe;
+
+    @Column(name = "picture")
+    private String picture;
 }
