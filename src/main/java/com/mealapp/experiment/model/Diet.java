@@ -23,9 +23,6 @@ public class Diet {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "recipe")
-    private String recipe;
-
     @Column(name = "picture")
     private String picture;
 }
