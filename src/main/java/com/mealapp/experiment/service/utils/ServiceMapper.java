@@ -41,7 +41,6 @@ public interface ServiceMapper {
 
     List<ListDietResponse> dietToListDietResponse(List<Diet> dietList);
 
-
     @Named("extractAllergies")
     default List<AllergyObject> extractAllergies(Set<Ingredient> ingredients) {
         if (ingredients == null || ingredients.isEmpty()) {
