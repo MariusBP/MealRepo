@@ -169,6 +169,8 @@ components:
           $ref: 'common/schemas.yaml#/components/schemas/Recipe'
         prepTime:
           $ref: 'common/schemas.yaml#/components/schemas/PrepTime'
+        calories:
+          $ref: 'common/schemas.yaml#/components/schemas/Calories'
     listMealResponse:
       allOf:
         - $ref: '#/components/schemas/baseMeal'

@@ -29,6 +29,9 @@ public class Meal {
     @Column(name = "recipe")
     private String recipe;
 
+    @Column(name = "calories")
+    private Integer calories;
+
     @Column(name = "prep_Time")
     private Integer prepTime;
 

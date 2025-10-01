@@ -46,6 +46,13 @@ components:
       format: date
       description: Date the item was created.
       example: 2023-10-01
+    Calories:
+      type: number
+      format: integer
+      minimum: 0
+      maximum: 99999
+      description: Calories per meal
+      example: 450
     NutritionalValue:
       type: number
       format: double
