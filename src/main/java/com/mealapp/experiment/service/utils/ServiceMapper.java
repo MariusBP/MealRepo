@@ -2,7 +2,7 @@ package com.mealapp.experiment.service.utils;
 
 import com.mealapp.experiment.model.Allergy;
 import com.mealapp.experiment.model.Diet;
-import com.mealapp.experiment.model.Ingredient;
+import com.mealapp.experiment.model.IngredientMeal;
 import com.mealapp.experiment.model.Meal;
 import com.mealapp.openapi.diet.model.ListDietResponse;
 import com.mealapp.openapi.meal.model.AllergyObject;
@@ -17,8 +17,10 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.Named;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Mapper(
     componentModel = "spring",
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 )
 public interface ServiceMapper {
 
-    @Mapping(target = "allergies", source = "ingredients", qualifiedByName = "extractAllergies")
+    @Mapping(target = "allergies", source = "ingredientMeals", qualifiedByName = "extractAllergies")
     ReadMealResponse mealToReadMealResponse(Meal meal);
 
     ListMealResponse mealToListMealResponse(Meal meal);
@@ -42,12 +44,23 @@ public interface ServiceMapper {
     List<ListDietResponse> dietToListDietResponse(List<Diet> dietList);
 
     @Named("extractAllergies")
-    default List<AllergyObject> extractAllergies(Set<Ingredient> ingredients) {
-        if (ingredients == null || ingredients.isEmpty()) {
+    default List<AllergyObject> extractAllergies(Set<IngredientMeal> ingredientMeals) {
+        if (ingredientMeals == null || ingredientMeals.isEmpty()) {
             return List.of();
         }
-        return ingredients.stream()
-                .flatMap(ingredient -> ingredient.getAllergies().stream())
+        return ingredientMeals.stream()
+                .filter(Objects::nonNull)
+                .flatMap(im -> {
+                    if (im.getIngredient() == null) {
+                        return Stream.<Allergy>empty();
+                    }
+                    var allergies = im.getIngredient().getAllergies();
+                    if (allergies == null || allergies.isEmpty()) {
+                        return Stream.<Allergy>empty();
+                    }else {
+                        return allergies.stream();
+                    }
+                })
                 .distinct()
                 .map(this::allergyToAllergyObject)
                 .collect(Collectors.toList());

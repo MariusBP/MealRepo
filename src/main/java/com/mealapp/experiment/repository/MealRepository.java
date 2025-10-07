@@ -16,6 +16,12 @@ public interface MealRepository extends JpaRepository<Meal, Long> {
     @Query("SELECT DISTINCT m FROM Meal m JOIN m.categories c WHERE m.diet.id = :dietId AND (:categoryIds IS NULL OR c.id IN :categoryIds)")
     List<Meal> findByDietIdAndCategoriesIds(@Param("dietId") Long dietId, @Param("categoryIds") List<Long> categoryIds);
 
-    @EntityGraph(attributePaths = {"ingredients", "ingredients.allergies", "categories", "diet"})
-    Optional<Meal> findAllById(Long id);
+    @EntityGraph(attributePaths = {
+            "ingredientMeals",
+            "ingredientMeals.ingredient",
+            "ingredientMeals.ingredient.allergies",
+            "categories",
+            "diet"
+    })
+    Optional<Meal> findMealById(Long id);
 }
