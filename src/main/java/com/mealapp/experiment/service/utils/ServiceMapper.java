@@ -56,12 +56,12 @@ public interface ServiceMapper {
                     if (im.getIngredient() == null) {
                         return null;
                     }
-                    IngredientObject ingredientObject = new IngredientObject();
-                    ingredientObject.setId(im.getIngredient().getId());
-                    ingredientObject.setName(im.getIngredient().getName());
-                    ingredientObject.setAmount(im.getAmount());
-                    ingredientObject.setUnit(im.getUnit());
-                    return ingredientObject;
+                    IngredientObject ingredient = new IngredientObject();
+                    ingredient.setId(im.getIngredient().getId());
+                    ingredient.setName(im.getIngredient().getName());
+                    ingredient.setAmount(im.getAmount());
+                    ingredient.setUnit(im.getUnit());
+                    return ingredient;
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
@@ -69,22 +69,13 @@ public interface ServiceMapper {
 
     @Named("extractAllergies")
     default List<AllergyObject> extractAllergies(Set<IngredientMeal> ingredientMeals) {
-        if (ingredientMeals == null || ingredientMeals.isEmpty()) {
-            return List.of();
-        }
+        if (ingredientMeals == null || ingredientMeals.isEmpty()) return List.of();
         return ingredientMeals.stream()
+                .map(IngredientMeal::getIngredient)
                 .filter(Objects::nonNull)
-                .flatMap(im -> {
-                    if (im.getIngredient() == null) {
-                        return Stream.<Allergy>empty();
-                    }
-                    var allergies = im.getIngredient().getAllergies();
-                    if (allergies == null || allergies.isEmpty()) {
-                        return Stream.<Allergy>empty();
-                    }else {
-                        return allergies.stream();
-                    }
-                })
+                .flatMap(ingredient -> ingredient.getAllergies() == null
+                        ? Stream.empty()
+                        : ingredient.getAllergies().stream())
                 .distinct()
                 .map(this::allergyToAllergyObject)
                 .collect(Collectors.toList());
