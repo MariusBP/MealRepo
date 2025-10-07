@@ -45,7 +45,7 @@ public class Meal {
     @JoinColumn(name = "diet_id", nullable = false)
     private Diet diet;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "meal", fetch = FetchType.LAZY)
     private Set<IngredientMeal> ingredientMeals = new HashSet<>();
 
     @ManyToMany

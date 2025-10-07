@@ -6,6 +6,7 @@ import com.mealapp.experiment.model.IngredientMeal;
 import com.mealapp.experiment.model.Meal;
 import com.mealapp.openapi.diet.model.ListDietResponse;
 import com.mealapp.openapi.meal.model.AllergyObject;
+import com.mealapp.openapi.meal.model.IngredientObject;
 import com.mealapp.openapi.meal.model.ListMealResponse;
 import com.mealapp.openapi.meal.model.ReadMealResponse;
 import org.mapstruct.Mapper;
@@ -31,6 +32,7 @@ import java.util.stream.Stream;
 public interface ServiceMapper {
 
     @Mapping(target = "allergies", source = "ingredientMeals", qualifiedByName = "extractAllergies")
+    @Mapping(target = "ingredients", source = "ingredientMeals", qualifiedByName = "extractIngredients")
     ReadMealResponse mealToReadMealResponse(Meal meal);
 
     ListMealResponse mealToListMealResponse(Meal meal);
@@ -42,6 +44,28 @@ public interface ServiceMapper {
     Meal merge(Meal newMeal, @MappingTarget Meal existingMeal);
 
     List<ListDietResponse> dietToListDietResponse(List<Diet> dietList);
+
+    @Named("extractIngredients")
+    default List<IngredientObject> extractIngredients(Set<IngredientMeal> ingredientMeals) {
+        if (ingredientMeals == null || ingredientMeals.isEmpty()) {
+            return List.of();
+        }
+        return ingredientMeals.stream()
+                .filter(Objects::nonNull)
+                .map(im -> {
+                    if (im.getIngredient() == null) {
+                        return null;
+                    }
+                    IngredientObject ingredientObject = new IngredientObject();
+                    ingredientObject.setId(im.getIngredient().getId());
+                    ingredientObject.setName(im.getIngredient().getName());
+                    ingredientObject.setAmount(im.getAmount());
+                    ingredientObject.setUnit(im.getUnit());
+                    return ingredientObject;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
 
     @Named("extractAllergies")
     default List<AllergyObject> extractAllergies(Set<IngredientMeal> ingredientMeals) {

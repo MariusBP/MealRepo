@@ -27,8 +27,8 @@ public class IngredientMeal {
     @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredient ingredient;
 
-    @Column(name = "quantity")
-    private double quantity;
+    @Column(name = "amount")
+    private double amount;
 
     @Column(name = "unit")
     private String unit;
