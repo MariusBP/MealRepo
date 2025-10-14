@@ -167,6 +167,8 @@ components:
           $ref: 'common/schemas.yaml#/components/schemas/Description'
         recipe:
           $ref: 'common/schemas.yaml#/components/schemas/Recipe'
+        servings:
+          $ref: 'common/schemas.yaml#/components/schemas/Servings'
         prepTime:
           $ref: 'common/schemas.yaml#/components/schemas/PrepTime'
         calories:

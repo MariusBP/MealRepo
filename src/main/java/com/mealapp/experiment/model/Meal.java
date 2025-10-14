@@ -38,6 +38,9 @@ public class Meal {
     @Column(name = "picture")
     private String picture;
 
+    @Column(name = "servings")
+    private Integer servings;
+
     @Column(name = "date_created")
     private LocalDate createdDate;
 
