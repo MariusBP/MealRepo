@@ -32,7 +32,7 @@ public class Meal {
     @Column(name = "calories")
     private Integer calories;
 
-    @Column(name = "prep_Time")
+    @Column(name = "prep_time")
     private Integer prepTime;
 
     @Column(name = "picture")
@@ -45,13 +45,8 @@ public class Meal {
     @JoinColumn(name = "diet_id", nullable = false)
     private Diet diet;
 
-    @ManyToMany
-    @JoinTable(
-            name = "ingredient_meal",
-            joinColumns = @JoinColumn(name = "meal_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-    )
-    private Set<Ingredient> ingredients = new HashSet<>();
+    @OneToMany(mappedBy = "meal", fetch = FetchType.LAZY)
+    private Set<IngredientMeal> ingredientMeals = new HashSet<>();
 
     @ManyToMany
     @JoinTable(

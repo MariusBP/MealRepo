@@ -60,3 +60,18 @@ components:
       maximum: 99999.99
       description: Nutritional value per 100g
       example: 25.5
+    Amount:
+      type: number
+      format: double
+      description: Amount of the item.
+      minimum: 0.1
+      maximum: 9999.99
+      default: 1.0
+      example: 150.0
+    Unit:
+      type: string
+      description: Unit of measurement for the amount.
+      maxLength: 10
+      default: g
+      example: g
+
