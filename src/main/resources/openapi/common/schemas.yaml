@@ -63,7 +63,7 @@ components:
     Amount:
       type: number
       format: double
-      description: Amount of the item in grams.
+      description: Amount of the item.
       minimum: 0.1
       maximum: 9999.99
       default: 1.0
