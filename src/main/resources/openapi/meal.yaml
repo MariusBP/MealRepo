@@ -252,7 +252,7 @@ components:
         amount:
           $ref: 'common/schemas.yaml#/components/schemas/Amount'
         unit:
-            $ref: 'common/schemas.yaml#/components/schemas/Unit'
+          $ref: 'common/schemas.yaml#/components/schemas/Unit'
     AllergyObject:
       type: object
       properties:
