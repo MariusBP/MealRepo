@@ -34,6 +34,13 @@ components:
       maxLength: 255
       description: Step by step instructions to prepare the item.
       example: Mix all ingredients and cook for 30 minutes.
+    Servings:
+      type: integer
+      description: Number of servings the recipe yields.
+      minimum: 1
+      maximum: 100
+      default: 4
+      example: 4
     PrepTime:
       type: integer
       description: Preparation time in minutes
