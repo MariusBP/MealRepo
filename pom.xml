@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.0</version>
-		<relativePath/> <!-- lookup parent from com.mealapp.experiment.repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.mealapp</groupId>
 	<artifactId>experiment</artifactId>
@@ -100,9 +100,9 @@
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>${flyway.version}</version>
 				<configuration>
-					<url>${flyway.url}</url>
-					<user>${flyway.user}</user>
-					<password>${flyway.password}</password>
+					<url>${env.DB_URL}</url>
+					<user>${env.DB_USERNAME}</user>
+					<password>${env.DB_PASSWORD}</password>
 					<locations>
 						<location>classpath:db/migration</location>
 					</locations>
