@@ -34,12 +34,10 @@ paths:
         - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
         - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
         - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
-        - $ref: 'common/parameters.yaml#/components/parameters/IngredientIdParam'
       operationId: listIngredients
       tags:
         - ingredient
-      description: |-
-        Retrieves a list of ingredients, optionally filtered by allergy associations.
+      description: Retrieves a list of ingredients, optionally filtered by allergy associations.
       responses:
         '200':
           description: List of ingredients
@@ -115,6 +113,7 @@ paths:
         - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
         - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
         - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+        - $ref: 'common/parameters.yaml#/components/parameters/IngredientIdParam'
       operationId: updateIngredient
       tags:
         - ingredient
@@ -160,6 +159,8 @@ components:
     baseIngredient:
       type: object
       properties:
+        id:
+          $ref: 'common/schemas.yaml#/components/schemas/Id'
         name:
           $ref: 'common/schemas.yaml#/components/schemas/Name'
         kcal:

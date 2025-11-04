@@ -15,7 +15,52 @@
 	<description>Creating a meal application to experiment with backend</description>
 	<properties>
 		<java.version>21</java.version>
+		<logback.version>1.5.19</logback.version>
+		<commons-lang3.version>3.18.0</commons-lang3.version>
 	</properties>
+
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<db.url>${env.DB_URL}</db.url>
+				<db.username>${env.DB_USERNAME}</db.username>
+				<db.password>${env.DB_PASSWORD}</db.password>
+			</properties>
+		</profile>
+		<profile>
+			<id>ci</id>
+			<properties>
+				<db.url>${env.DB_URL}</db.url>
+				<db.username>${env.DB_USERNAME}</db.username>
+				<db.password>${env.DB_PASSWORD}</db.password>
+			</properties>
+		</profile>
+	</profiles>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -57,7 +102,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.8.9</version>
+			<version>2.7.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openapitools</groupId>
@@ -100,9 +145,9 @@
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>${flyway.version}</version>
 				<configuration>
-					<url>${env.DB_URL}</url>
-					<user>${env.DB_USERNAME}</user>
-					<password>${env.DB_PASSWORD}</password>
+					<url>${db.url}</url>
+					<user>${db.username}</user>
+					<password>${db.password}</password>
 					<locations>
 						<location>classpath:db/migration</location>
 					</locations>
@@ -169,7 +214,6 @@
 							<globalProperties>
 								<generateModels>true</generateModels>
 								<generateApis>true</generateApis>
-								<generateSupportingFiles>false</generateSupportingFiles>
 							</globalProperties>
 						</configuration>
 					</execution>
@@ -193,7 +237,6 @@
 							<globalProperties>
 								<generateModels>true</generateModels>
 								<generateApis>true</generateApis>
-								<generateSupportingFiles>false</generateSupportingFiles>
 							</globalProperties>
 						</configuration>
 					</execution>
@@ -217,7 +260,29 @@
 							<globalProperties>
 								<generateModels>true</generateModels>
 								<generateApis>true</generateApis>
-								<generateSupportingFiles>false</generateSupportingFiles>
+							</globalProperties>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-ingredient-api</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/ingredient.yaml</inputSpec>
+							<skipValidateSpec>false</skipValidateSpec>
+							<generatorName>spring</generatorName>
+							<output>${project.build.directory}/generated-sources/openapi</output>
+							<modelPackage>com.mealapp.openapi.ingredient.model</modelPackage>
+							<apiPackage>com.mealapp.openapi.ingredient.api</apiPackage>
+							<configOptions>
+								<useSpringBoot3>true</useSpringBoot3>
+								<interfaceOnly>true</interfaceOnly>
+								<useTags>true</useTags>
+							</configOptions>
+							<globalProperties>
+								<generateModels>true</generateModels>
+								<generateApis>true</generateApis>
 							</globalProperties>
 						</configuration>
 					</execution>
