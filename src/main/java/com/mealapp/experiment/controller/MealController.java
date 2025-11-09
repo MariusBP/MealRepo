@@ -80,7 +80,7 @@ public class MealController implements MealApi {
 
         apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
 
-        ReadMealResponse readMealResponse = mealService.createMeal(mapper.createMealRequestToMeal(createMealRequest));
+        ReadMealResponse readMealResponse = mealService.createMeal(mapper.createMealRequestToEntity(createMealRequest));
         System.out.println("createMeal called with request: " + createMealRequest);
         return ResponseEntity.ok(readMealResponse);
     }
@@ -96,7 +96,7 @@ public class MealController implements MealApi {
         apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
 
         ReadMealResponse readMealResponse = mealService.updateMeal(
-                updateMealRequest.getId(), mapper.updateMealRequestToMeal(updateMealRequest));
+                updateMealRequest.getId(), mapper.updateMealRequestToEntity(updateMealRequest));
 
         System.out.println("updateMeal called with request: " + updateMealRequest);
         return ResponseEntity.ok(readMealResponse);

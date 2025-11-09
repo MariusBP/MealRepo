@@ -158,6 +158,11 @@ components:
   schemas:
     baseMeal:
       type: object
+      required:
+        - name
+        - calories
+        - servings
+        - prepTime
       properties:
         name:
           $ref: 'common/schemas.yaml#/components/schemas/Name'

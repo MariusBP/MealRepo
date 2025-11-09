@@ -158,9 +158,9 @@ components:
   schemas:
     baseIngredient:
       type: object
+      required:
+        - name
       properties:
-        id:
-          $ref: 'common/schemas.yaml#/components/schemas/Id'
         name:
           $ref: 'common/schemas.yaml#/components/schemas/Name'
         kcal:
@@ -201,6 +201,11 @@ components:
       allOf:
         - $ref: '#/components/schemas/baseIngredient'
         - type: object
+          properties:
+            allergies:
+              type: array
+              items:
+                $ref: '#/components/schemas/AllergyObject'
     updateIngredientRequest:
       allOf:
         - $ref: '#/components/schemas/baseIngredient'

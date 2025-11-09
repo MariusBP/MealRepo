@@ -47,5 +47,7 @@ public class Ingredient {
             joinColumns = @JoinColumn(name = "ingredient_id"),
             inverseJoinColumns = @JoinColumn(name = "allergy_id")
     )
+
+    @Builder.Default
     private Set<Allergy> allergies = new HashSet<>();
 }
