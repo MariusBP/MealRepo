@@ -2,9 +2,12 @@ package com.mealapp.experiment.service.utils;
 
 import com.mealapp.experiment.model.Allergy;
 import com.mealapp.experiment.model.Diet;
+import com.mealapp.experiment.model.Ingredient;
 import com.mealapp.experiment.model.IngredientMeal;
 import com.mealapp.experiment.model.Meal;
 import com.mealapp.openapi.diet.model.ListDietResponse;
+import com.mealapp.openapi.ingredient.model.ListIngredientResponse;
+import com.mealapp.openapi.ingredient.model.ReadIngredientResponse;
 import com.mealapp.openapi.meal.model.AllergyObject;
 import com.mealapp.openapi.meal.model.IngredientObject;
 import com.mealapp.openapi.meal.model.ListMealResponse;
@@ -31,6 +34,7 @@ import java.util.stream.Stream;
 )
 public interface ServiceMapper {
 
+
     @Mapping(target = "allergies", source = "ingredientMeals", qualifiedByName = "extractAllergies")
     @Mapping(target = "ingredients", source = "ingredientMeals", qualifiedByName = "extractIngredients")
     ReadMealResponse mealToReadMealResponse(Meal meal);
@@ -45,6 +49,15 @@ public interface ServiceMapper {
 
     List<ListDietResponse> dietToListDietResponse(List<Diet> dietList);
 
+    ReadIngredientResponse ingredientToReadIngredientResponse(Ingredient ingredient);
+
+    ListIngredientResponse ingredientToListIngredientResponse(Ingredient ingredient);
+
+    List<ListIngredientResponse> ingredientToListIngredientResponse(List<Ingredient> ingredientList);
+
+    Ingredient merge(Ingredient newIngredient, @MappingTarget Ingredient existingIngredient);
+
+    // Named methods for extracting ingredients and allergies
     @Named("extractIngredients")
     default List<IngredientObject> extractIngredients(Set<IngredientMeal> ingredientMeals) {
         if (ingredientMeals == null || ingredientMeals.isEmpty()) {
