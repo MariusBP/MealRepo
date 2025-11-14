@@ -66,8 +66,8 @@ public class MealController implements MealApi {
             String userAgent) {
 
         log.info("createMeal called with request: {}", createMealRequest);
-        ReadMealResponse readMealResponse = mealService.createMeal
-                (mapper.createMealRequestToEntity(createMealRequest));
+        ReadMealResponse readMealResponse = mealService.createMeal(
+                mapper.createMealRequestToEntity(createMealRequest));
         return ResponseEntity.ok(readMealResponse);
     }
 

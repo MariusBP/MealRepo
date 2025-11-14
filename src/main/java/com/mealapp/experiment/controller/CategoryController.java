@@ -39,7 +39,7 @@ public class CategoryController implements CategoryApi {
 
         CategoryResponse response = categoryService.createCategory(
                 mapper.createCategoryRequestToCategory(createCategoryRequest));
-       log.info("createCategory called.");
+        log.info("createCategory called.");
         return ResponseEntity.ok(response);
     }
 

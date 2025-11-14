@@ -23,7 +23,6 @@ public class CategoryServiceImpl implements CategoryService{
     private final ServiceMapper mapper;
 
     @Override
-
     @Transactional(readOnly = true)
     public List<CategoryResponse> listCategories() {
         log.info("Fetching list of Category successful");
@@ -42,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     private void validateCategoryNameExists(String name) {
         categoryRepository.findByName(name).ifPresent(category -> {
-            throw ExceptionUtils.exception(HttpStatus.CONFLICT,"Category with name '" + name + "' already exists.").get();
+            throw ExceptionUtils.exception(HttpStatus.CONFLICT, "Category with name '" + name + "' already exists.").get();
         });
     }
 }
