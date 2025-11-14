@@ -41,7 +41,7 @@ public class AllergyServiceImpl implements AllergyService {
         log.info("Fetching allergy with id: {}", id);
 
         Allergy allergy = allergyRepository.findById(id).orElseThrow(
-                ExceptionUtils.exception(HttpStatus.NOT_FOUND, "Not found allergy with id: " + id)
+                ExceptionUtils.exception(HttpStatus.NOT_FOUND, "Did not find allergy with id: " + id)
         );
         return mapper.allergyToReadAllergyResponse(allergy);
     }

@@ -123,7 +123,7 @@ class AllergyServiceTest {
 
         assertThatThrownBy(() -> allergyService.getAllergy(NON_EXISTENT_ALLERGY_ID))
                 .isInstanceOf(ResponseStatusException.class)
-                .hasMessageContaining("Not found allergy with id: " + NON_EXISTENT_ALLERGY_ID);
+                .hasMessageContaining("Did not find allergy with id: " + NON_EXISTENT_ALLERGY_ID);
 
         verify(allergyRepository).findById(NON_EXISTENT_ALLERGY_ID);
         verify(mapper, never()).allergyToReadAllergyResponse(any());
