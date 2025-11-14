@@ -50,9 +50,9 @@ class CategoryIntegrationTest {
     @Test
     void createCategory_Ok() throws Exception {
         mockMvc.perform(post("/api/category")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(category())))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(category())))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name").value("Breakfast"))
@@ -66,7 +66,7 @@ class CategoryIntegrationTest {
         categoryRepository.save(categoryFour());
 
         mockMvc.perform(get("/api/category")
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE))
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isArray())
@@ -77,18 +77,9 @@ class CategoryIntegrationTest {
     }
 
     @Test
-    void createCategory_MissingRequiredField_ThrowsException() throws Exception {
-        mockMvc.perform(post("/api/category")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(categoryInvalid())))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
     void listCategories_EmptyList_ReturnsEmptyArray() throws Exception {
         mockMvc.perform(get("/api/category")
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE))
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isArray())
@@ -96,7 +87,16 @@ class CategoryIntegrationTest {
     }
 
     @Test
-    void listCategories_InvalidApiKey_ThrowsUnauthorized() throws Exception {
+    void createCategory_MissingRequiredField_ThrowsException() throws Exception {
+        mockMvc.perform(post("/api/category")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(categoryInvalid())))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void listCategories_InvalidApiKey_ThrowsException() throws Exception {
         reset(apiKeyInterceptor);
         when(apiKeyInterceptor.preHandle(any(), any(), any())).thenThrow(
                 new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid API key")

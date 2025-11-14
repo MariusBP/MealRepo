@@ -6,6 +6,7 @@ import com.mealapp.openapi.category.api.CategoryApi;
 import com.mealapp.openapi.category.model.CategoryResponse;
 import com.mealapp.openapi.category.model.CreateCategoryRequest;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class CategoryController implements CategoryApi {
@@ -26,7 +28,7 @@ public class CategoryController implements CategoryApi {
 
     @PostConstruct
     public void init() {
-        System.out.println("CategoryController initialized");
+        log.info("CategoryController initialized");
     }
 
     @Override
@@ -37,7 +39,7 @@ public class CategoryController implements CategoryApi {
 
         CategoryResponse response = categoryService.createCategory(
                 mapper.createCategoryRequestToCategory(createCategoryRequest));
-        System.out.println("createCategory called.");
+       log.info("createCategory called.");
         return ResponseEntity.ok(response);
     }
 
@@ -47,7 +49,7 @@ public class CategoryController implements CategoryApi {
             String xRequestID, String userAgent,
             UUID xCorrelationID) {
 
-        System.out.println("listCategories called.");
+        log.info("listCategories called.");
         return ResponseEntity.ok(categoryService.listCategories());
     }
 }

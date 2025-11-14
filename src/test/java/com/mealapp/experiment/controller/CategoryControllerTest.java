@@ -66,9 +66,9 @@ class CategoryControllerTest {
         when(categoryService.createCategory(any(Category.class))).thenReturn(categoryResponse);
 
         mockMvc.perform(post(BASE_URL)
-                .header("Accept", "application/json")
-                .header("Content-Type", "application/json")
-                .content(objectMapper.writeValueAsString(createRequest)))
+                        .header("Accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .content(objectMapper.writeValueAsString(createRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -86,7 +86,7 @@ class CategoryControllerTest {
         when(categoryService.listCategories()).thenReturn(categories);
 
         mockMvc.perform(get(BASE_URL)
-                .header("Accept", "application/json"))
+                        .header("Accept", "application/json"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -103,7 +103,7 @@ class CategoryControllerTest {
         when(categoryService.listCategories()).thenReturn(List.of());
 
         mockMvc.perform(get(BASE_URL)
-                .header("Accept", "application/json"))
+                        .header("Accept", "application/json"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -112,11 +112,11 @@ class CategoryControllerTest {
     }
 
     @Test
-    void createCategory_InvalidRequestBody() throws Exception {
+    void createCategory_InvalidRequestBody_ThrowsException() throws Exception {
         mockMvc.perform(post(BASE_URL)
-                .header("Accept", "application/json")
-                .header("Content-Type", "application/json")
-                .content("invalid json"))
+                        .header("Accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .content("invalid json"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 

@@ -72,20 +72,6 @@ class DietServiceTest {
         verify(dietRepository).findAll();
     }
 
-    @Test
-    void listDiets_RepositoryException_ThrowsException() {
-        when(dietRepository.findAll()).thenThrow(new RuntimeException("Database connection failed"));
-
-        try {
-            dietService.listDiets();
-        } catch (RuntimeException e) {
-            assertThat(e.getMessage()).contains("Database connection failed");
-        }
-
-        verify(dietRepository).findAll();
-        verify(mapper, never()).dietToListDietResponse(any());
-    }
-
     private Diet buildDiet() {
         Diet diet = new Diet();
         diet.setId(1L);

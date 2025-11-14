@@ -72,9 +72,9 @@ class IngredientControllerTest {
         when(ingredientService.createIngredient(any(Ingredient.class))).thenReturn(readResponse);
 
         mockMvc.perform(post(BASE_URL_SINGULAR)
-                .header("Accept", "application/json")
-                .header("Content-Type", "application/json")
-                .content(objectMapper.writeValueAsString(createRequest)))
+                        .header("Accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .content(objectMapper.writeValueAsString(createRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -90,8 +90,8 @@ class IngredientControllerTest {
         when(ingredientService.getIngredient(1L)).thenReturn(readResponse);
 
         mockMvc.perform(get(BASE_URL_SINGULAR)
-                .param("id", "1")
-                .header("Accept", "application/json"))
+                        .param("id", "1")
+                        .header("Accept", "application/json"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -107,7 +107,7 @@ class IngredientControllerTest {
         when(ingredientService.listIngredients()).thenReturn(ingredients);
 
         mockMvc.perform(get(BASE_URL_PLURAL)
-                .header("Accept", "application/json"))
+                        .header("Accept", "application/json"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -123,7 +123,7 @@ class IngredientControllerTest {
         when(ingredientService.listIngredients()).thenReturn(List.of());
 
         mockMvc.perform(get(BASE_URL_PLURAL)
-                .header("Accept", "application/json"))
+                        .header("Accept", "application/json"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -132,11 +132,11 @@ class IngredientControllerTest {
     }
 
     @Test
-    void createIngredient_InvalidRequestBody() throws Exception {
+    void createIngredient_InvalidRequestBody_ThrowsException() throws Exception {
         mockMvc.perform(post(BASE_URL_SINGULAR)
-                .header("Accept", "application/json")
-                .header("Content-Type", "application/json")
-                .content("invalid json"))
+                        .header("Accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .content("invalid json"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
@@ -144,7 +144,7 @@ class IngredientControllerTest {
     }
 
     @Test
-    void getIngredient_NotFound() throws Exception {
+    void getIngredient_NotFound_ThrowsException() throws Exception {
         when(ingredientService.getIngredient(999L))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found"));
 

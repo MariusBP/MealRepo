@@ -34,6 +34,14 @@ components:
         type: integer
         format: int64
       example: 1
+    AllergyIdParam:
+      name: id
+      in: query
+      required: true
+      schema:
+        type: integer
+        format: int64
+      example: 1
     IngredientIdParam:
       name: id
       in: query

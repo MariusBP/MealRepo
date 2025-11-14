@@ -83,21 +83,6 @@ class MealControllerTest {
     }
 
     @Test
-    void getMeal_NotFound_ThrowsException() throws Exception {
-        when(mealService.getMeal(999L))
-                .thenThrow(new ResponseStatusException(
-                        org.springframework.http.HttpStatus.NOT_FOUND,
-                        "Meal not found"));
-
-        mockMvc.perform(get("/api/meal")
-                        .param("id", "999")
-                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isNotFound());
-
-        verify(mealService).getMeal(999L);
-    }
-
-    @Test
     void listMeals_Success() throws Exception {
         List<ListMealResponse> responses = List.of(listResponse);
         when(mealService.listMeals(any(Long.class), any())).thenReturn(responses);
@@ -165,7 +150,22 @@ class MealControllerTest {
     }
 
     @Test
-    void createMeal_InvalidJson_ThrowsBadRequest() throws Exception {
+    void getMeal_NotFound_ThrowsException() throws Exception {
+        when(mealService.getMeal(999L))
+                .thenThrow(new ResponseStatusException(
+                        org.springframework.http.HttpStatus.NOT_FOUND,
+                        "Meal not found"));
+
+        mockMvc.perform(get("/api/meal")
+                        .param("id", "999")
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isNotFound());
+
+        verify(mealService).getMeal(999L);
+    }
+
+    @Test
+    void createMeal_InvalidJson_ThrowsException() throws Exception {
         mockMvc.perform(post("/api/meal")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Accept", MediaType.APPLICATION_JSON_VALUE)

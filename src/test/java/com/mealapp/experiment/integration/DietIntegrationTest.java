@@ -38,7 +38,7 @@ class DietIntegrationTest {
     @Test
     void listDiets_Ok() throws Exception {
         mockMvc.perform(get("/api/diets")
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE))
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isArray())
@@ -46,15 +46,15 @@ class DietIntegrationTest {
     }
 
     @Test
-    void listDiets_InvalidApiKey_ThrowsUnauthorized() throws Exception {
+    void listDiets_InvalidApiKey_ThrowsException() throws Exception {
         reset(apiKeyInterceptor);
         when(apiKeyInterceptor.preHandle(any(), any(), any())).thenThrow(
-            new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid API key")
+                new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid API key")
         );
 
         mockMvc.perform(get("/api/diets")
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .header("X-API-Key", "invalid-api-key-123"))
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                        .header("X-API-Key", "invalid-api-key-123"))
                 .andExpect(status().isUnauthorized());
     }
 }

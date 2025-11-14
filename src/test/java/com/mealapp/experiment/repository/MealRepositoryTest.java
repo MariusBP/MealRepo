@@ -5,13 +5,11 @@ import com.mealapp.experiment.model.Meal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +34,7 @@ class MealRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        testDiet = createDiet("Test Diet", "Test diet description");
+        testDiet = createDiet();
 
         testMeal1 = buildMeal("Test Meal 1", "First test meal", testDiet);
         testMeal2 = buildMeal("Test Meal 2", "Second test meal", testDiet);
@@ -145,10 +143,10 @@ class MealRepositoryTest {
                 .build();
     }
 
-    private Diet createDiet(String name, String description) {
+    private Diet createDiet() {
         Diet diet = new Diet();
-        diet.setName(name);
-        diet.setDescription(description);
+        diet.setName("Test Diet");
+        diet.setDescription("Test diet description");
         diet.setPicture("test.jpg");
         return dietRepository.save(diet);
     }

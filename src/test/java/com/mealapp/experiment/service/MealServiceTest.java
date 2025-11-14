@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -65,18 +64,6 @@ class MealServiceTest {
     }
 
     @Test
-    void getMeal_NotFound_ThrowsException() {
-        when(mealRepository.findMealById(999L)).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> mealService.getMeal(999L))
-                .isInstanceOf(ResponseStatusException.class)
-                .hasMessageContaining("Did not find meal with id: 999");
-
-        verify(mealRepository).findMealById(999L);
-        verify(mapper, never()).mealToReadMealResponse(any());
-    }
-
-    @Test
     void listMeals_Success() {
         List<Meal> meals = Arrays.asList(meal, buildMealTwo());
         List<ListMealResponse> responses = Arrays.asList(listResponse, buildListResponseTwo());
@@ -105,7 +92,7 @@ class MealServiceTest {
         assertThat(result).isNotNull();
         assertThat(result).isEmpty();
 
-        verify(mealRepository).findByDietIdAndCategoriesIds(1L, Collections.emptyList(), 0 );
+        verify(mealRepository).findByDietIdAndCategoriesIds(1L, Collections.emptyList(), 0);
     }
 
     @Test
@@ -140,6 +127,18 @@ class MealServiceTest {
         verify(mealRepository, times(2)).findMealById(1L);
         verify(mapper).merge(updatedMeal, meal);
         verify(mapper).mealToReadMealResponse(meal);
+    }
+
+    @Test
+    void getMeal_NotFound_ThrowsException() {
+        when(mealRepository.findMealById(999L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> mealService.getMeal(999L))
+                .isInstanceOf(ResponseStatusException.class)
+                .hasMessageContaining("Did not find meal with id: 999");
+
+        verify(mealRepository).findMealById(999L);
+        verify(mapper, never()).mealToReadMealResponse(any());
     }
 
     @Test

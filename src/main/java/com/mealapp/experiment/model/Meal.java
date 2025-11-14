@@ -48,7 +48,7 @@ public class Meal {
     @JoinColumn(name = "diet_id", nullable = false)
     private Diet diet;
 
-    @OneToMany(mappedBy = "meal", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "meal", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<IngredientMeal> ingredientMeals = new HashSet<>();
 
     @ManyToMany
@@ -62,5 +62,18 @@ public class Meal {
     @PrePersist
     private void onCreate() {
         this.createdDate = LocalDate.now();
+    }
+
+    public void addCategory(Category category) {
+        if (this.categories == null) {
+            this.categories = new HashSet<>();
+        }
+        this.categories.add(category);
+    }
+
+    public void removeCategory(Category category) {
+        if (this.categories != null) {
+            this.categories.remove(category);
+        }
     }
 }

@@ -62,11 +62,11 @@ class MealIntegrationTest {
     }
 
     @Test
-    void createMeal_ValidRequest_ReturnsCreatedMeal() throws Exception {
+    void createMeal_Ok() throws Exception {
         mockMvc.perform(post(MEAL_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(buildCreateMealRequest())))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(buildCreateMealRequest())))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name").value("Test Integration Meal"))
@@ -74,22 +74,13 @@ class MealIntegrationTest {
     }
 
     @Test
-    void createMeal_MissingRequiredField_ReturnsBadRequest() throws Exception {
-        mockMvc.perform(post(MEAL_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(buildInvalidMealRequest())))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void getMeal_ExistingId_ReturnsMeal() throws Exception {
+    void getMeal_Ok() throws Exception {
         Meal savedMeal = mealRepository.save(buildTestMeal("Test Meal One", "First test meal"));
         Long mealId = savedMeal.getId();
 
         mockMvc.perform(get(MEAL_ENDPOINT)
-                .param("id", mealId.toString())
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE))
+                        .param("id", mealId.toString())
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(mealId))
@@ -97,35 +88,27 @@ class MealIntegrationTest {
     }
 
     @Test
-    void getMeal_NonExistentId_ReturnsNotFound() throws Exception {
-        mockMvc.perform(get(MEAL_ENDPOINT)
-                .param("id", NON_EXISTENT_ID.toString())
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    void updateMeal_ValidRequest_ReturnsUpdatedMeal() throws Exception {
+    void updateMeal_Ok() throws Exception {
         Meal savedMeal = mealRepository.save(buildTestMeal("Test Meal", "Original description"));
         Long mealId = savedMeal.getId();
 
         mockMvc.perform(patch(MEAL_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(buildUpdateMealRequest(mealId))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(buildUpdateMealRequest(mealId))))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(mealId));
     }
 
     @Test
-    void listMeals_WithDietId_ReturnsMatchingMeals() throws Exception {
+    void listMeals_Ok() throws Exception {
         mealRepository.save(buildTestMeal("Test Meal One", "First test meal"));
         mealRepository.save(buildTestMeal("Test Meal Two", "Second test meal"));
 
         mockMvc.perform(get(MEALS_LIST_ENDPOINT)
-                .param("diet_id", testDiet.getId().toString())
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE))
+                        .param("diet_id", testDiet.getId().toString())
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isArray())
@@ -133,16 +116,33 @@ class MealIntegrationTest {
     }
 
     @Test
-    void listMeals_InvalidApiKey_ReturnsUnauthorized() throws Exception {
+    void getMeal_NonExistentId_ThrowsException() throws Exception {
+        mockMvc.perform(get(MEAL_ENDPOINT)
+                        .param("id", NON_EXISTENT_ID.toString())
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void createMeal_MissingRequiredField_ThrowsException() throws Exception {
+        mockMvc.perform(post(MEAL_ENDPOINT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(buildInvalidMealRequest())))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void listMeals_InvalidApiKey_ThrowsException() throws Exception {
         reset(apiKeyInterceptor);
         when(apiKeyInterceptor.preHandle(any(), any(), any())).thenThrow(
                 new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid API key")
         );
 
         mockMvc.perform(get(MEALS_LIST_ENDPOINT)
-                .param("diet_id", testDiet.getId().toString())
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .header("X-API-Key", "invalid-api-key-123"))
+                        .param("diet_id", testDiet.getId().toString())
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                        .header("X-API-Key", "invalid-api-key-123"))
                 .andExpect(status().isUnauthorized());
     }
 

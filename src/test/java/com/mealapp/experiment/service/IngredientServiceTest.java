@@ -13,8 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
-import com.mealapp.experiment.repository.AllergyRepository;
-import com.mealapp.experiment.service.validation.ServiceValidation;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,12 +32,6 @@ class IngredientServiceTest {
 
     @Mock
     private ServiceMapper mapper;
-
-    @Mock
-    private AllergyRepository allergyRepository;
-
-    @Mock
-    private ServiceValidation validation;
 
     @InjectMocks
     private IngredientServiceImpl ingredientService;

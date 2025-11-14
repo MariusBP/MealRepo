@@ -1,0 +1,140 @@
+openapi: 3.0.3
+info:
+  title: Allergy service API
+  version: 1.0.0
+  description: |
+    API for fetching and creating allergies.
+    This contract describes a RESTful API for an allergy service.
+    
+    This API allows you to:
+        - Retrieve a list of allergies, each including its ID, name, and description.
+        - Retrieve detailed information about a specific allergy by its ID.
+        - Create a new allergy with a name and description.
+    
+    The create endpoint requires a request body with the allergy details.
+    
+    It supports various headers for passing request metadata.
+
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local development server
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /allergies:
+    parameters:
+      - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+      - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+      - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+      - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+      - $ref: 'common/header.yaml#/components/parameters/CorrelationIdHeader'
+    get:
+      summary: Get a list of allergies
+      operationId: listAllergies
+      tags:
+          - Allergy
+      description: |-
+          Retrieves a list of allergies.
+          This endpoint does not require a request body.
+      responses:
+        '200':
+          description: List of allergies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListAllergyResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
+
+  /allergy:
+    parameters:
+      - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+      - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+      - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+      - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+      - $ref: 'common/header.yaml#/components/parameters/CorrelationIdHeader'
+    get:
+      summary: Get allergy by ID
+      operationId: getAllergy
+      tags:
+          - Allergy
+      parameters:
+        - $ref: 'common/parameters.yaml#/components/parameters/AllergyIdParam'
+      description: |-
+          Retrieves detailed information about a specific allergy by its ID.
+      responses:
+        '200':
+          description: Allergy details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadAllergyResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '404':
+          $ref: 'common/error.yaml#/components/responses/NotFound'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
+    post:
+      summary: |
+        Create a new allergy including name and description.
+        ID will be generated automatically.
+      operationId: createAllergy
+      tags:
+          - Allergy
+      requestBody:
+        description: Allergy details to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAllergyRequest'
+      responses:
+        '201':
+          description: Allergy created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadAllergyResponse'
+        '400':
+          $ref: 'common/error.yaml#/components/responses/BadRequest'
+        '500':
+          $ref: 'common/error.yaml#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      $ref: 'common/security.yaml#/components/securitySchemes/ApiKeyAuth'
+  schemas:
+    ListAllergyResponse:
+      type: object
+      properties:
+        id:
+          $ref: 'common/schemas.yaml#/components/schemas/Id'
+        name:
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
+    ReadAllergyResponse:
+      type: object
+      properties:
+        id:
+          $ref: 'common/schemas.yaml#/components/schemas/Id'
+        name:
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
+    CreateAllergyRequest:
+      type: object
+      properties:
+        name:
+          $ref: 'common/schemas.yaml#/components/schemas/Name'
+      required:
+        - name
+

@@ -1,8 +1,10 @@
 package com.mealapp.experiment.controller.utils;
 
+import com.mealapp.experiment.model.Allergy;
 import com.mealapp.experiment.model.Category;
 import com.mealapp.experiment.model.Ingredient;
 import com.mealapp.experiment.model.Meal;
+import com.mealapp.openapi.allergy.model.CreateAllergyRequest;
 import com.mealapp.openapi.ingredient.model.CreateIngredientRequest;
 import com.mealapp.openapi.ingredient.model.UpdateIngredientRequest;
 import com.mealapp.openapi.meal.model.CreateMealRequest;
@@ -30,4 +32,6 @@ public interface ControllerMapper {
     Ingredient updateIngredientRequestToIngredient(UpdateIngredientRequest updateIngredientRequest);
 
     Category createCategoryRequestToCategory(CreateCategoryRequest createCategoryRequest);
+
+    Allergy createAllergyRequestToAllergy(CreateAllergyRequest createAllergyRequest);
 }

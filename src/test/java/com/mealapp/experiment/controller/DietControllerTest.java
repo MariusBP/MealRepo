@@ -47,7 +47,7 @@ class DietControllerTest {
         when(dietService.listDiets()).thenReturn(responses);
 
         mockMvc.perform(get("/api/diets")
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE))
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isArray())
@@ -63,7 +63,7 @@ class DietControllerTest {
         when(dietService.listDiets()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/api/diets")
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE))
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isArray())

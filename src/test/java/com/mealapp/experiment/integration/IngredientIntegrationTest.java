@@ -50,9 +50,9 @@ class IngredientIntegrationTest {
     @Test
     void createIngredient_Ok() throws Exception {
         mockMvc.perform(post("/api/ingredient")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(ingredient())))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(ingredient())))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name").value("Flour"));
@@ -65,7 +65,7 @@ class IngredientIntegrationTest {
         ingredientRepository.save(ingredientFour());
 
         mockMvc.perform(get("/api/ingredients")
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE))
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isArray())
@@ -81,8 +81,8 @@ class IngredientIntegrationTest {
         Long ingredientId = savedIngredient.getId();
 
         mockMvc.perform(get("/api/ingredient")
-                .param("id", ingredientId.toString())
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE))
+                        .param("id", ingredientId.toString())
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(ingredientId))
@@ -98,29 +98,29 @@ class IngredientIntegrationTest {
     @Test
     void getIngredient_NotFound_ThrowsException() throws Exception {
         mockMvc.perform(get("/api/ingredient")
-                .param("id", "9999")
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE))
+                        .param("id", "9999")
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void createIngredient_MissingRequiredField_ThrowsException() throws Exception {
         mockMvc.perform(post("/api/ingredient")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(ingredientInvalid())))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(ingredientInvalid())))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    void listIngredients_InvalidApiKey_ThrowsUnauthorized() throws Exception {
+    void listIngredients_InvalidApiKey_ThrowsException() throws Exception {
         reset(apiKeyInterceptor);
         when(apiKeyInterceptor.preHandle(any(), any(), any())).thenThrow(
                 new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid API key")
         );
         mockMvc.perform(get("/api/ingredients")
-                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .header("X-API-Key", "invalid-api-key-123"))
+                        .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                        .header("X-API-Key", "invalid-api-key-123"))
                 .andExpect(status().isUnauthorized());
     }
 

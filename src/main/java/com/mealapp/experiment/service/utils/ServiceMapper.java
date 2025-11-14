@@ -1,6 +1,8 @@
 package com.mealapp.experiment.service.utils;
 
 import com.mealapp.experiment.model.*;
+import com.mealapp.openapi.allergy.model.ListAllergyResponse;
+import com.mealapp.openapi.allergy.model.ReadAllergyResponse;
 import com.mealapp.openapi.category.model.CategoryResponse;
 import com.mealapp.openapi.diet.model.ListDietResponse;
 import com.mealapp.openapi.ingredient.model.ListIngredientResponse;
@@ -41,6 +43,10 @@ public interface ServiceMapper {
     List<ListMealResponse> mealToListMealResponse(List<Meal> mealList);
 
     AllergyObject allergyToAllergyObject(Allergy allergy);
+
+    ReadAllergyResponse allergyToReadAllergyResponse(Allergy allergy);
+
+    List<ListAllergyResponse> allergyToListAllergyResponse(List<Allergy> allergyList);
 
     Meal merge(Meal newMeal, @MappingTarget Meal existingMeal);
 
