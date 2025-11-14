@@ -1,6 +1,5 @@
 package com.mealapp.experiment.controller;
 
-import com.mealapp.experiment.controller.utils.ApiUtils;
 import com.mealapp.experiment.controller.utils.ControllerMapper;
 import com.mealapp.experiment.service.ingredient.IngredientService;
 import com.mealapp.openapi.ingredient.api.IngredientApi;
@@ -9,7 +8,6 @@ import com.mealapp.openapi.ingredient.model.ListIngredientResponse;
 import com.mealapp.openapi.ingredient.model.ReadIngredientResponse;
 import com.mealapp.openapi.ingredient.model.UpdateIngredientRequest;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,12 +21,6 @@ public class IngredientController implements IngredientApi {
 
     @Autowired
     private IngredientService ingredientService;
-
-    @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
-    private ApiUtils apiUtils;
 
     @Autowired
     private ControllerMapper mapper;
@@ -46,11 +38,9 @@ public class IngredientController implements IngredientApi {
             String xRequestID,
             String userAgent) {
 
-        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
-
         ReadIngredientResponse readIngredientResponse =
-                ingredientService.createIngredient(mapper.createIngredientRequestToIngredient(createIngredientRequest));
-
+                ingredientService.createIngredient(
+                        mapper.createIngredientRequestToIngredient(createIngredientRequest));
         System.out.println("createIngredient called.");
         return ResponseEntity.ok(readIngredientResponse);
     }
@@ -63,8 +53,6 @@ public class IngredientController implements IngredientApi {
             String xRequestID,
             String userAgent) {
 
-        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
-
         System.out.println("getIngredient called.");
         return ResponseEntity.ok(ingredientService.getIngredient(id));
     }
@@ -75,8 +63,6 @@ public class IngredientController implements IngredientApi {
             String contentType,
             String xRequestID,
             String userAgent) {
-
-        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
 
         System.out.println("listIngredients called.");
         return ResponseEntity.ok(ingredientService.listIngredients());
@@ -93,11 +79,9 @@ public class IngredientController implements IngredientApi {
             String xRequestID,
             String userAgent) {
 
-        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
-
         ReadIngredientResponse readIngredientResponse =
-                ingredientService.updateIngredient(id, mapper.updateIngredientRequestToIngredient(updateIngredientRequest));
-
+                ingredientService.updateIngredient(
+                        id, mapper.updateIngredientRequestToIngredient(updateIngredientRequest));
         System.out.println("updateIngredient called.");
         return ResponseEntity.ok(readIngredientResponse);
     }

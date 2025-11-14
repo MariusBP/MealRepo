@@ -1,7 +1,8 @@
-package com.mealapp.experiment.service.ingredient;
+package com.mealapp.experiment.service;
 
 import com.mealapp.experiment.model.Ingredient;
 import com.mealapp.experiment.repository.IngredientRepository;
+import com.mealapp.experiment.service.ingredient.IngredientServiceImpl;
 import com.mealapp.experiment.service.utils.ServiceMapper;
 import com.mealapp.openapi.ingredient.model.ListIngredientResponse;
 import com.mealapp.openapi.ingredient.model.ReadIngredientResponse;
@@ -12,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
+import com.mealapp.experiment.repository.AllergyRepository;
+import com.mealapp.experiment.service.validation.ServiceValidation;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,8 +35,14 @@ class IngredientServiceTest {
     @Mock
     private ServiceMapper mapper;
 
+    @Mock
+    private AllergyRepository allergyRepository;
+
+    @Mock
+    private ServiceValidation validation;
+
     @InjectMocks
-    private IngredientServiceImp ingredientService;
+    private IngredientServiceImpl ingredientService;
 
     private Ingredient ingredient;
     private ReadIngredientResponse readResponse;
@@ -65,7 +74,6 @@ class IngredientServiceTest {
     void getIngredient_Success() {
         when(ingredientRepository.findIngredientById(1L)).thenReturn(Optional.of(ingredient));
         when(mapper.ingredientToReadIngredientResponse(any(Ingredient.class))).thenReturn(readResponse);
-
         ReadIngredientResponse result = ingredientService.getIngredient(1L);
 
         assertThat(result).isNotNull();

@@ -201,6 +201,9 @@ components:
       allOf:
         - $ref: '#/components/schemas/baseIngredient'
         - type: object
+          required:
+            - allergies
+            - name
           properties:
             allergies:
               type: array

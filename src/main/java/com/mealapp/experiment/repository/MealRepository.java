@@ -13,8 +13,8 @@ import java.util.Optional;
 @Repository
 public interface MealRepository extends JpaRepository<Meal, Long> {
 
-    @Query("SELECT DISTINCT m FROM Meal m JOIN m.categories c WHERE m.diet.id = :dietId AND (:categoryIds IS NULL OR c.id IN :categoryIds)")
-    List<Meal> findByDietIdAndCategoriesIds(@Param("dietId") Long dietId, @Param("categoryIds") List<Long> categoryIds);
+    @Query("SELECT DISTINCT m FROM Meal m LEFT JOIN m.categories c WHERE m.diet.id = :dietId AND (:categoryIdsSize = 0 OR c.id IN :categoryIds)")
+    List<Meal> findByDietIdAndCategoriesIds(@Param("dietId") Long dietId, @Param("categoryIds") List<Long> categoryIds, @Param("categoryIdsSize") int categoryIdsSize);
 
     @EntityGraph(attributePaths = {
             "ingredientMeals",

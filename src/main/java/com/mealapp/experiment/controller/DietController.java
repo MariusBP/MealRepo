@@ -1,11 +1,9 @@
 package com.mealapp.experiment.controller;
 
-import com.mealapp.experiment.controller.utils.ApiUtils;
 import com.mealapp.experiment.service.diet.DietService;
 import com.mealapp.openapi.diet.api.DietApi;
 import com.mealapp.openapi.diet.model.ListDietResponse;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +19,6 @@ public class DietController implements DietApi {
     @Autowired
     private DietService dietService;
 
-    @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
-    private ApiUtils apiUtils;
-
     @PostConstruct
     public void init() {
         System.out.println("DietController initialized");
@@ -39,8 +31,6 @@ public class DietController implements DietApi {
             String xRequestID,
             String userAgent,
             UUID xCorrelationID) {
-
-        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
 
         System.out.println("listDiets called");
         return ResponseEntity.ok(dietService.listDiets());

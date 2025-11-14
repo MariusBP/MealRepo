@@ -1,11 +1,13 @@
 package com.mealapp.experiment.controller.utils;
 
+import com.mealapp.experiment.model.Category;
 import com.mealapp.experiment.model.Ingredient;
 import com.mealapp.experiment.model.Meal;
 import com.mealapp.openapi.ingredient.model.CreateIngredientRequest;
 import com.mealapp.openapi.ingredient.model.UpdateIngredientRequest;
 import com.mealapp.openapi.meal.model.CreateMealRequest;
 import com.mealapp.openapi.meal.model.UpdateMealRequest;
+import com.mealapp.openapi.category.model.CreateCategoryRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.NullValueCheckStrategy;
@@ -27,4 +29,5 @@ public interface ControllerMapper {
 
     Ingredient updateIngredientRequestToIngredient(UpdateIngredientRequest updateIngredientRequest);
 
+    Category createCategoryRequestToCategory(CreateCategoryRequest createCategoryRequest);
 }
