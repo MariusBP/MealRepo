@@ -97,7 +97,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/CreateMealRequest'
       responses:
-        '200':
+        '201':
           description: Meal created successfully
           content:
             application/json:
@@ -210,6 +210,9 @@ components:
       allOf:
         - $ref: '#/components/schemas/baseMeal'
         - type: object
+          required:
+                - diet
+                - ingredients
           properties:
             diet:
               $ref: '#/components/schemas/DietObject'
@@ -234,10 +237,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/IngredientObject'
-            allergies:
-              type: array
-              items:
-                $ref: '#/components/schemas/AllergyObject'
             categories:
               type: array
               items:
@@ -260,6 +259,10 @@ components:
           $ref: 'common/schemas.yaml#/components/schemas/Amount'
         unit:
           $ref: 'common/schemas.yaml#/components/schemas/Unit'
+        allergies:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergyObject'
     AllergyObject:
       type: object
       properties:

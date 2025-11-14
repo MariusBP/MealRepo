@@ -1,8 +1,8 @@
 package com.mealapp.experiment.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mealapp.experiment.controller.utils.ApiUtils;
 import com.mealapp.experiment.controller.utils.ControllerMapper;
+import com.mealapp.experiment.interceptor.ApiKeyInterceptor;
 import com.mealapp.experiment.model.Ingredient;
 import com.mealapp.experiment.service.ingredient.IngredientService;
 import com.mealapp.openapi.ingredient.model.CreateIngredientRequest;
@@ -11,7 +11,6 @@ import com.mealapp.openapi.ingredient.model.ReadIngredientResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -20,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -33,9 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ActiveProfiles("test")
 class IngredientControllerTest {
 
-    @Value("${X_Api_Key}")
-    private String xApiKey;
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -43,7 +39,7 @@ class IngredientControllerTest {
     private IngredientService ingredientService;
 
     @MockitoBean
-    private ApiUtils apiUtils;
+    private ApiKeyInterceptor apiKeyInterceptor;
 
     @MockitoBean
     private ControllerMapper controllerMapper;
@@ -60,11 +56,13 @@ class IngredientControllerTest {
     private static final String BASE_URL_SINGULAR = "/api/ingredient";
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         createRequest = buildCreateIngredient();
         ingredient = buildIngredient();
         readResponse = buildReadResponse();
         listResponse = buildListResponse();
+
+        when(apiKeyInterceptor.preHandle(any(), any(), any())).thenReturn(true);
     }
 
     @Test
@@ -72,20 +70,17 @@ class IngredientControllerTest {
         when(controllerMapper.createIngredientRequestToIngredient(any(CreateIngredientRequest.class)))
                 .thenReturn(ingredient);
         when(ingredientService.createIngredient(any(Ingredient.class))).thenReturn(readResponse);
-        doNothing().when(apiUtils).validateApiKeyFromRequest(xApiKey);
 
         mockMvc.perform(post(BASE_URL_SINGULAR)
-                .header("X-API-Key", xApiKey)
-                .header("Accept", "application/json")
-                .header("Content-Type", "application/json")
-                .content(objectMapper.writeValueAsString(createRequest)))
+                        .header("Accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .content(objectMapper.writeValueAsString(createRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.name").value("Milk"));
 
-        verify(apiUtils).validateApiKeyFromRequest(xApiKey);
         verify(controllerMapper).createIngredientRequestToIngredient(any(CreateIngredientRequest.class));
         verify(ingredientService).createIngredient(any(Ingredient.class));
     }
@@ -93,31 +88,26 @@ class IngredientControllerTest {
     @Test
     void getIngredient_Success() throws Exception {
         when(ingredientService.getIngredient(1L)).thenReturn(readResponse);
-        doNothing().when(apiUtils).validateApiKeyFromRequest(xApiKey);
 
         mockMvc.perform(get(BASE_URL_SINGULAR)
-                .param("id", "1")
-                .header("X-API-Key", xApiKey)
-                .header("Accept", "application/json"))
+                        .param("id", "1")
+                        .header("Accept", "application/json"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.name").value("Milk"));
 
-        verify(apiUtils).validateApiKeyFromRequest(xApiKey);
         verify(ingredientService).getIngredient(1L);
     }
 
     @Test
     void listIngredients_Success() throws Exception {
-        List<ListIngredientResponse> ingredients = Arrays.asList(listResponse);
+        List<ListIngredientResponse> ingredients = Collections.singletonList(listResponse);
         when(ingredientService.listIngredients()).thenReturn(ingredients);
-        doNothing().when(apiUtils).validateApiKeyFromRequest(xApiKey);
 
         mockMvc.perform(get(BASE_URL_PLURAL)
-                .header("X-API-Key", xApiKey)
-                .header("Accept", "application/json"))
+                        .header("Accept", "application/json"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -125,18 +115,15 @@ class IngredientControllerTest {
                 .andExpect(jsonPath("$[0].id").value(1L))
                 .andExpect(jsonPath("$[0].name").value("Milk"));
 
-        verify(apiUtils).validateApiKeyFromRequest(xApiKey);
         verify(ingredientService).listIngredients();
     }
 
     @Test
     void listIngredients_EmptyList() throws Exception {
-        when(ingredientService.listIngredients()).thenReturn(Arrays.asList());
-        doNothing().when(apiUtils).validateApiKeyFromRequest(xApiKey);
+        when(ingredientService.listIngredients()).thenReturn(List.of());
 
         mockMvc.perform(get(BASE_URL_PLURAL)
-                .header("X-API-Key", xApiKey)
-                .header("Accept", "application/json"))
+                        .header("Accept", "application/json"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -145,14 +132,11 @@ class IngredientControllerTest {
     }
 
     @Test
-    void createIngredient_InvalidRequestBody() throws Exception {
-        doNothing().when(apiUtils).validateApiKeyFromRequest(xApiKey);
-
+    void createIngredient_InvalidRequestBody_ThrowsException() throws Exception {
         mockMvc.perform(post(BASE_URL_SINGULAR)
-                .header("X-API-Key", xApiKey)
-                .header("Accept", "application/json")
-                .header("Content-Type", "application/json")
-                .content("invalid json"))
+                        .header("Accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .content("invalid json"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
@@ -160,14 +144,12 @@ class IngredientControllerTest {
     }
 
     @Test
-    void getIngredient_NotFound() throws Exception {
+    void getIngredient_NotFound_ThrowsException() throws Exception {
         when(ingredientService.getIngredient(999L))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found"));
-        doNothing().when(apiUtils).validateApiKeyFromRequest(xApiKey);
 
         mockMvc.perform(get(BASE_URL_SINGULAR)
                         .param("id", "999")
-                        .header("X-API-Key", xApiKey)
                         .header("Accept", "application/json"))
                 .andDo(print())
                 .andExpect(status().isNotFound());

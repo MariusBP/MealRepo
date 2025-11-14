@@ -54,8 +54,8 @@ components:
       description: Date the item was created.
       example: 2023-10-01
     Calories:
-      type: number
-      format: integer
+      type: integer
+      format: int32
       minimum: 0
       maximum: 99999
       description: Calories per meal
@@ -81,4 +81,3 @@ components:
       maxLength: 10
       default: g
       example: g
-

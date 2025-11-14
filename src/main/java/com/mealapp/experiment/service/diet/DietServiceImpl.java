@@ -7,20 +7,22 @@ import com.mealapp.openapi.diet.model.ListDietResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Slf4j
 @Service
 @AllArgsConstructor
-public class DietServiceImp implements DietService {
+public class DietServiceImpl implements DietService {
 
     private final DietRepository dietRepository;
     private final ServiceMapper mapper;
 
     @Override
+    @Transactional(readOnly = true)
     public List<ListDietResponse> listDiets() {
-        List<Diet> diets = dietRepository.findAll();
-        return mapper.dietToListDietResponse(diets);
+        log.info("Fetching list of Diets successful");
+        return mapper.dietToListDietResponse(dietRepository.findAll());
     }
 }

@@ -18,5 +18,5 @@ public class Allergy {
 
     @Column(name = "name", nullable = false)
     private String name;
-
 }
+

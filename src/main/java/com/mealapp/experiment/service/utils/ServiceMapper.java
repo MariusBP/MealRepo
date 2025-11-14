@@ -1,10 +1,9 @@
 package com.mealapp.experiment.service.utils;
 
-import com.mealapp.experiment.model.Allergy;
-import com.mealapp.experiment.model.Diet;
-import com.mealapp.experiment.model.Ingredient;
-import com.mealapp.experiment.model.IngredientMeal;
-import com.mealapp.experiment.model.Meal;
+import com.mealapp.experiment.model.*;
+import com.mealapp.openapi.allergy.model.ListAllergyResponse;
+import com.mealapp.openapi.allergy.model.ReadAllergyResponse;
+import com.mealapp.openapi.category.model.CategoryResponse;
 import com.mealapp.openapi.diet.model.ListDietResponse;
 import com.mealapp.openapi.ingredient.model.ListIngredientResponse;
 import com.mealapp.openapi.ingredient.model.ReadIngredientResponse;
@@ -45,6 +44,10 @@ public interface ServiceMapper {
 
     AllergyObject allergyToAllergyObject(Allergy allergy);
 
+    ReadAllergyResponse allergyToReadAllergyResponse(Allergy allergy);
+
+    List<ListAllergyResponse> allergyToListAllergyResponse(List<Allergy> allergyList);
+
     Meal merge(Meal newMeal, @MappingTarget Meal existingMeal);
 
     List<ListDietResponse> dietToListDietResponse(List<Diet> dietList);
@@ -56,6 +59,10 @@ public interface ServiceMapper {
     List<ListIngredientResponse> ingredientToListIngredientResponse(List<Ingredient> ingredientList);
 
     Ingredient merge(Ingredient newIngredient, @MappingTarget Ingredient existingIngredient);
+
+    CategoryResponse categoryToCategoryResponse(Category category);
+
+    List<CategoryResponse> categoryToListCategoryResponse(List<Category> categoryList);
 
     // Named methods for extracting ingredients and allergies
     @Named("extractIngredients")

@@ -1,7 +1,8 @@
-package com.mealapp.experiment.service.ingredient;
+package com.mealapp.experiment.service;
 
 import com.mealapp.experiment.model.Ingredient;
 import com.mealapp.experiment.repository.IngredientRepository;
+import com.mealapp.experiment.service.ingredient.IngredientServiceImpl;
 import com.mealapp.experiment.service.utils.ServiceMapper;
 import com.mealapp.openapi.ingredient.model.ListIngredientResponse;
 import com.mealapp.openapi.ingredient.model.ReadIngredientResponse;
@@ -33,7 +34,7 @@ class IngredientServiceTest {
     private ServiceMapper mapper;
 
     @InjectMocks
-    private IngredientServiceImp ingredientService;
+    private IngredientServiceImpl ingredientService;
 
     private Ingredient ingredient;
     private ReadIngredientResponse readResponse;
@@ -65,7 +66,6 @@ class IngredientServiceTest {
     void getIngredient_Success() {
         when(ingredientRepository.findIngredientById(1L)).thenReturn(Optional.of(ingredient));
         when(mapper.ingredientToReadIngredientResponse(any(Ingredient.class))).thenReturn(readResponse);
-
         ReadIngredientResponse result = ingredientService.getIngredient(1L);
 
         assertThat(result).isNotNull();

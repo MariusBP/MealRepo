@@ -296,6 +296,29 @@
 							</globalProperties>
 						</configuration>
 					</execution>
+					<execution>
+						<id>generate-allergy-api</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/allergy.yaml</inputSpec>
+							<skipValidateSpec>false</skipValidateSpec>
+							<generatorName>spring</generatorName>
+							<output>${project.build.directory}/generated-sources/openapi</output>
+							<modelPackage>com.mealapp.openapi.allergy.model</modelPackage>
+							<apiPackage>com.mealapp.openapi.allergy.api</apiPackage>
+							<configOptions>
+								<useSpringBoot3>true</useSpringBoot3>
+								<interfaceOnly>true</interfaceOnly>
+								<useTags>true</useTags>
+							</configOptions>
+							<globalProperties>
+								<generateModels>true</generateModels>
+								<generateApis>true</generateApis>
+							</globalProperties>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 
@@ -364,7 +387,68 @@
 							</configOptions>
 						</configuration>
 					</execution>
+					<execution>
+						<id>bundle-allergy-spec</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/allergy.yaml</inputSpec>
+							<language>openapi-yaml</language>
+							<output>${project.build.directory}/bundled-openapi</output>
+							<configOptions>
+								<outputFile>allergy.yaml</outputFile>
+							</configOptions>
+						</configuration>
+					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<rule>
+									<element>PACKAGE</element>
+									<limits>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>0.0</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<excludes>
+						<exclude>**/openapi/**/*</exclude>
+						<exclude>**/MealAppExperimentApplication.class</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

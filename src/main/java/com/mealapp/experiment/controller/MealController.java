@@ -1,7 +1,6 @@
 package com.mealapp.experiment.controller;
 
 
-import com.mealapp.experiment.controller.utils.ApiUtils;
 import com.mealapp.experiment.controller.utils.ControllerMapper;
 import com.mealapp.experiment.service.meal.MealService;
 import com.mealapp.openapi.meal.api.MealApi;
@@ -10,14 +9,14 @@ import com.mealapp.openapi.meal.model.ListMealResponse;
 import com.mealapp.openapi.meal.model.ReadMealResponse;
 import com.mealapp.openapi.meal.model.UpdateMealRequest;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class MealController implements MealApi {
@@ -26,17 +25,11 @@ public class MealController implements MealApi {
     private MealService mealService;
 
     @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
-    private ApiUtils apiUtils;
-
-    @Autowired
     private ControllerMapper mapper;
 
     @PostConstruct
     public void init() {
-        System.out.println("MealController initialized");
+        log.info("MealController initialized");
     }
 
     @Override
@@ -47,10 +40,7 @@ public class MealController implements MealApi {
             String xRequestID,
             String userAgent) {
 
-
-        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
-
-        System.out.println("getMeal called with id: " + id);
+        log.info("getMeal called with id: " + id);
         return ResponseEntity.ok(mealService.getMeal(id));
     }
 
@@ -63,10 +53,7 @@ public class MealController implements MealApi {
             String userAgent,
             List<Long> categoryIdList) {
 
-        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
-
-        System.out.println("listMeals called with dietId: " + dietId + ", categoryIdList: " + categoryIdList);
-
+        log.info("listMeals called with dietId: {}, categoryIdList: {}", dietId, categoryIdList);
         return ResponseEntity.ok(mealService.listMeals(dietId, categoryIdList));
     }
 
@@ -78,10 +65,9 @@ public class MealController implements MealApi {
             String xRequestID,
             String userAgent) {
 
-        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
-
-        ReadMealResponse readMealResponse = mealService.createMeal(mapper.createMealRequestToEntity(createMealRequest));
-        System.out.println("createMeal called with request: " + createMealRequest);
+        log.info("createMeal called with request: {}", createMealRequest);
+        ReadMealResponse readMealResponse = mealService.createMeal(
+                mapper.createMealRequestToEntity(createMealRequest));
         return ResponseEntity.ok(readMealResponse);
     }
 
@@ -93,12 +79,9 @@ public class MealController implements MealApi {
             String xRequestID,
             String userAgent) {
 
-        apiUtils.validateApiKeyFromRequest(request.getHeader("X-API-Key"));
-
+        log.info("updateMeal called with request: {}", updateMealRequest);
         ReadMealResponse readMealResponse = mealService.updateMeal(
                 updateMealRequest.getId(), mapper.updateMealRequestToEntity(updateMealRequest));
-
-        System.out.println("updateMeal called with request: " + updateMealRequest);
         return ResponseEntity.ok(readMealResponse);
     }
 }

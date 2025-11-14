@@ -26,15 +26,15 @@ security:
   - ApiKeyAuth: []
 
 paths:
-  /categories:
+  /category:
+    parameters:
+      - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
+      - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
+      - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
+      - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
+      - $ref: 'common/header.yaml#/components/parameters/CorrelationIdHeader'
     get:
       summary: Get a list of categories
-      parameters:
-        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
-        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
-        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
-        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
-        - $ref: 'common/header.yaml#/components/parameters/CorrelationIdHeader'
       operationId: listCategories
       tags:
           - Category
@@ -54,18 +54,10 @@ paths:
           $ref: 'common/error.yaml#/components/responses/BadRequest'
         '500':
           $ref: 'common/error.yaml#/components/responses/InternalServerError'
-
-  /category:
     post:
       summary: |
         Create a new category including name and description.
         ID will be generated automatically.
-      parameters:
-        - $ref: 'common/header.yaml#/components/parameters/AcceptHeader'
-        - $ref: 'common/header.yaml#/components/parameters/ContentTypeHeader'
-        - $ref: 'common/header.yaml#/components/parameters/RequestIdHeader'
-        - $ref: 'common/header.yaml#/components/parameters/UserAgentHeader'
-        - $ref: 'common/header.yaml#/components/parameters/CorrelationIdHeader'
       operationId: createCategory
       tags:
           - Category
